@@ -1,26 +1,19 @@
-import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Home from './views/Home';
-import SignIn from './components/Auth/SignIn';
-import SignUp from './components/Auth/SignUp';
-import Dashboard from './views/Dashboard';
-import PrivateRoute from './components/Auth/PrivateRoute';
-import Navbar from './components/Navbar';
 import { AuthProvider } from './context/AuthContext';
+// import PrivateRoute from './components/Auth/PrivateRoute';
+import HomePage from './views/Home';
+import SignUp from './components/Auth/SignUp';
+import SignIn from './components/Auth/SignIn';
 
 const App: React.FC = () => {
   return (
     <AuthProvider>
       <Router>
-        <Navbar />
-        <div className="container mx-auto mt-4">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/signin" element={<SignIn />} />
-            <Route path="/signup" element={<SignUp />} />
-            <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
-          </Routes>
-        </div>
+        <Routes>
+          <Route path="/login" element={<SignIn />} />
+          <Route path="/register" element={<SignUp />} />
+          <Route path="/home" element={<HomePage />} />
+        </Routes>
       </Router>
     </AuthProvider>
   );

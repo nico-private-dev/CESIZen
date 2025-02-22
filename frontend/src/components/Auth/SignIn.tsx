@@ -12,7 +12,7 @@ const SignIn: React.FC = () => {
     e.preventDefault();
     try {
       await login(email, password);
-      navigate('/dashboard');
+      navigate('/home');
     } catch (err) {
       console.error(err);
     }
