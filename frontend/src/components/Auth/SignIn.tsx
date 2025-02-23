@@ -12,6 +12,7 @@ const SignIn: React.FC = () => {
     e.preventDefault();
     try {
       await login(email, password);
+      localStorage.setItem('justLoggedIn', 'true');
       navigate('/');
     } catch (err) {
       console.error(err);
@@ -19,13 +20,13 @@ const SignIn: React.FC = () => {
   };
 
   return (
-      <div className="max-w-md mx-auto">
+      <div className="max-w-md mx-auto mt-8">
         <div className='flex flex-col items-center'>
           <h1 className='text-center mb-6'>Bienvenue sur CESIZen</h1>
           <span className='text-center'>L'applicaiton parfaite pour gérer votre stress et en savoir plus sur sa gestion</span>
         </div>
         <div className='bg-white p-8 border border-gray-300 rounded-lg mt-8'>
-          <h2 className="text-2xl font-bold mb-4">Inscription</h2>
+          <h2 className="text-2xl font-bold mb-4">Connexion</h2>
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
               <label className="block text-gray-700">Email</label>
@@ -45,14 +46,14 @@ const SignIn: React.FC = () => {
                 className="w-full p-2 border border-gray-300 rounded mt-1"
               />
             </div>
-            <button type="submit" className="w-full bg-primary text-white p-2 rounded border-2 border-primary font-bold hover:bg-transparent hover:border-primary hover:text-primary transition duration-300 ease">S'inscrire</button>
+            <button type="submit" className="w-full bg-primary text-white p-2 rounded border-2 border-primary font-bold hover:bg-transparent hover:border-primary hover:text-primary transition duration-300 ease">Se connecter</button>
             {error && <p className="text-red-500 mt-4">{error}</p>}
           </form>
         </div>
         <div className='flex gap-2 justify-between items-center mt-8'>
-          <div className='h-[1px] w-full bg-lowgrey'></div>
+          <div className='h-[1px] w-full bg-grey'></div>
           <span>Ou</span>
-          <div className='h-[1px] w-full bg-lowgrey'></div>
+          <div className='h-[1px] w-full bg-grey'></div>
         </div>
         <div className='flex justify-center'>
           <img src="/img/btn-france_connect.png" alt="" />
