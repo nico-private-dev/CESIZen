@@ -3,19 +3,13 @@ export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
-      fontFamily: {
-        'title': ['Nunito'],
-        'body': ['Plus Jakarta Sans'],
+      colors: {
+        transparent: 'transparent',
+        primary: '#01BF62',
+        secondary: '#FFDE59',
+        black: '#1C1C1C',
+        lowgrey: '#E2E8F0',
       },
-    },
-    colors: {
-      transparent: 'transparent',
-      'primary': '#3163FE',
-      'secondary': '#0C2B4D',
-      'white': '#FFFFFF',
-      'gray': '#aaaaaa',
-      'lightgray': '#f7f7f7',
-      'error': '#ef233c',
     },
   },
   plugins: [],

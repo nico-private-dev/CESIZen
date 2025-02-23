@@ -1,13 +1,10 @@
 import React from 'react';
 import { useAuth } from '../context/AuthContext';
-import Navbar from '../components/Navbar';
 
 const Home: React.FC = () => {
   const { isAuthenticated, user } = useAuth();
 
   return (
-    <>
-      <Navbar />
       <div className="text-center mt-8">
         {isAuthenticated ? (
           <>
@@ -21,7 +18,6 @@ const Home: React.FC = () => {
           </>
         )}
       </div>
-    </>
   );
 };
 

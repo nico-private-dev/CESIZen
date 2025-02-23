@@ -1,19 +1,21 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
-// import PrivateRoute from './components/Auth/PrivateRoute';
-import HomePage from './views/Home';
-import SignUp from './components/Auth/SignUp';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Layout from './components/Layout/Layout';
+import Home from './views/Home';
 import SignIn from './components/Auth/SignIn';
+import SignUp from './components/Auth/SignUp';
+import { AuthProvider } from './context/AuthContext';
 
 const App: React.FC = () => {
   return (
     <AuthProvider>
       <Router>
-        <Routes>
-          <Route path="/login" element={<SignIn />} />
-          <Route path="/register" element={<SignUp />} />
-          <Route path="/home" element={<HomePage />} />
-        </Routes>
+        <Layout>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<SignIn />} />
+            <Route path="/register" element={<SignUp />} />
+          </Routes>
+        </Layout>
       </Router>
     </AuthProvider>
   );

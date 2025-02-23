@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import Navbar from '../Navbar';
 
 const SignUp: React.FC = () => {
   const [firstname, setFirstname] = useState('');
@@ -15,15 +14,13 @@ const SignUp: React.FC = () => {
     e.preventDefault();
     try {
       await register(firstname, lastname, email, password, 'user'); // ou 'admin' selon le rôle souhaité
-      navigate('/home');
+      navigate('/');
     } catch (err) {
       console.error(err);
     }
   };
 
   return (
-    <>
-      <Navbar />
       <div className="max-w-md mx-auto bg-white p-8 border border-gray-300 rounded-lg mt-8">
         <h2 className="text-2xl font-bold mb-4">Sign Up</h2>
         <form onSubmit={handleSubmit}>
@@ -67,7 +64,6 @@ const SignUp: React.FC = () => {
           {error && <p className="text-red-500 mt-4">{error}</p>}
         </form>
       </div>
-    </>
   );
 };
 
