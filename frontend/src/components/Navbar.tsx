@@ -37,7 +37,7 @@ const Navbar: React.FC = () => {
             onClick={() => setMobileMenuOpen(true)}
             className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
           >
-            <span className="sr-only">Open main menu</span>
+            <span className="sr-only">Ouvrir le menu</span>
             <Bars3Icon aria-hidden="true" className="h-6 w-6" />
           </button>
         </div>
@@ -78,7 +78,7 @@ const Navbar: React.FC = () => {
               <span className="sr-only">Cesizen</span>
               <img
                 alt="Cesizen"
-                src="https://tailwindui.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
+                src="/img/logo-cesizen.svg"
                 className="h-8 w-auto"
               />
             </Link>
@@ -94,12 +94,6 @@ const Navbar: React.FC = () => {
           <div className="mt-6 flow-root">
             <div className="-my-6 divide-y divide-gray-500/10">
               <div className="space-y-2 py-6">
-                <Disclosure as="div" className="-mx-3">
-                  <DisclosureButton className="group flex w-full items-center justify-between rounded-lg py-2 pr-3.5 pl-3 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
-                    Product
-                    <ChevronDownIcon aria-hidden="true" className="h-5 w-5 flex-none group-open:rotate-180" />
-                  </DisclosureButton>
-                </Disclosure>
                 <Link
                   to="/"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
@@ -121,19 +115,20 @@ const Navbar: React.FC = () => {
               </div>
               <div className="py-6">
                 {isAuthenticated ? (
-                  <button
-                    onClick={logout}
-                    className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                  >
-                    Logout
-                  </button>
+                  <button onClick={logout} className="text-sm font-semibold leading-6 text-gray-900 bg-secondary py-2 px-6 rounded border-2 border-secondary text-black hover:bg-transparent hover:border-secondary transition duration-300 ease">
+                  Se déconnecter <span aria-hidden="true">&rarr;</span>
+                </button>
                 ) : (
-                  <Link
-                    to="/login"
-                    className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                  >
-                    Log in
-                  </Link>
+                  <>
+                  <div className='flex gap-4'>
+                    <Link to="/register" className="text-sm font-semibold leading-6 text-gray-900 bg-primary py-2 px-6 rounded border-2 border-primary text-white hover:bg-transparent hover:border-primary hover:text-primary transition duration-300 ease">
+                      S'inscrire
+                    </Link>
+                    <Link to="/login" className="text-sm font-semibold leading-6 text-gray-900 bg-secondary py-2 px-6 rounded border-2 border-secondary text-black hover:bg-transparent hover:border-secondary transition duration-300 ease">
+                      Se connecter <span aria-hidden="true">&rarr;</span>
+                    </Link>
+                  </div>
+                </>
                 )}
               </div>
             </div>
