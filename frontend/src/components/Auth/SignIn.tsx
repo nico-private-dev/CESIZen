@@ -55,7 +55,7 @@ const SignIn: React.FC = () => {
           <span>Ou</span>
           <div className='h-[1px] w-full bg-grey'></div>
         </div>
-        <div className='flex justify-center'>
+        <div className='flex justify-center' title="Disponible prochainement">
           <img src="/img/btn-france_connect.png" alt="" />
         </div>
       </div>

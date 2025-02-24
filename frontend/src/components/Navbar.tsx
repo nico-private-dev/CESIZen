@@ -4,15 +4,13 @@ import { useAuth } from '../context/AuthContext';
 import {
   Dialog,
   DialogPanel,
-  Disclosure,
-  DisclosureButton,
   PopoverGroup,
 } from '@headlessui/react';
 import {
   Bars3Icon,
   XMarkIcon,
+  UserCircleIcon
 } from '@heroicons/react/24/outline';
-import { ChevronDownIcon } from '@heroicons/react/20/solid';
 
 const Navbar: React.FC = () => {
   const { isAuthenticated, logout } = useAuth();
@@ -21,7 +19,7 @@ const Navbar: React.FC = () => {
   return (
     <header className="bg-white">
       <nav aria-label="Global" className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8">
-        <div className="flex lg:flex-1">
+        <div className="flex">
           <Link to="/" className="-m-1.5 p-1.5">
             <span className="sr-only">Cesizen</span>
             <img
@@ -43,21 +41,32 @@ const Navbar: React.FC = () => {
         </div>
         <PopoverGroup className="hidden lg:flex lg:gap-x-12">
 
-          <Link to="/" className="text-sm font-semibold leading-6 text-gray-900">
+          <Link to="/exercice-respiration" className="text-sm font-semibold leading-6 text-gray-900">
             Exercice de respiration
           </Link>
           <Link to="/" className="text-sm font-semibold leading-6 text-gray-900">
-            Diagnostique
+            Diagnostic
           </Link>
           <Link to="/" className="text-sm font-semibold leading-6 text-gray-900">
-            Tracking
+            Tracker d'émotions
+          </Link>
+          <Link to="/" className="text-sm font-semibold leading-6 text-gray-900">
+            Informations
           </Link>
         </PopoverGroup>
-        <div className="hidden lg:flex lg:flex-1 lg:justify-end gap-4">
+        <div className="hidden lg:flex lg:justify-end gap-4">
           {isAuthenticated ? (
-            <button onClick={logout} className="text-sm font-semibold leading-6 text-gray-900 bg-secondary py-2 px-6 rounded border-2 border-secondary text-black hover:bg-transparent hover:border-secondary transition duration-300 ease">
-              Se déconnecter <span aria-hidden="true">&rarr;</span>
-            </button>
+                <>
+                <Link 
+                  to="/mon-compte" 
+                  className="inline-flex items-center text-sm font-semibold leading-6 text-primary hover:text-secondary transition duration-300 ease"
+                >
+                  <UserCircleIcon className="h-6 w-6" />
+                </Link>
+                <button onClick={logout} className="text-sm font-semibold leading-6 text-gray-900 bg-secondary py-2 px-6 rounded border-2 border-secondary text-black hover:bg-transparent hover:border-secondary transition duration-300 ease">
+                  Se déconnecter <span aria-hidden="true">&rarr;</span>
+                </button>
+              </>
           ) : (
             <>
               <Link to="/register" className="text-sm font-semibold leading-6 text-gray-900 bg-primary py-2 px-6 rounded border-2 border-primary text-white hover:bg-transparent hover:border-primary hover:text-primary transition duration-300 ease">
@@ -95,7 +104,7 @@ const Navbar: React.FC = () => {
             <div className="-my-6 divide-y divide-gray-500/10">
               <div className="space-y-2 py-6">
                 <Link
-                  to="/"
+                  to="/exercice-respiration"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
                   Exercice de respiration
@@ -104,13 +113,13 @@ const Navbar: React.FC = () => {
                   to="/"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
-                  Diagnostique
+                  Diagnostic
                 </Link>
                 <Link
                   to="/"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
-                  tracking
+                  Tracker
                 </Link>
               </div>
               <div className="py-6">

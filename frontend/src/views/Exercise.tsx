@@ -1,22 +1,31 @@
 import React from 'react';
-import { Exercise } from '../types';
+import { Link } from 'react-router-dom';
 
-interface ExerciseViewProps {
-  exercise: Exercise;
-}
-
-const ExerciseView: React.FC<ExerciseViewProps> = ({ exercise }) => {
+const ExerciseView: React.FC = () => {
   return (
-    <div className="p-4 border rounded-lg shadow-md">
-      <h2 className="text-xl font-bold mb-2">{exercise.title}</h2>
-      <p className="text-gray-600 mb-4">{exercise.description}</p>
-      <span className={`px-2 py-1 rounded text-sm ${
-        exercise.difficulty === 'easy' ? 'bg-green-200' :
-        exercise.difficulty === 'medium' ? 'bg-yellow-200' :
-        'bg-red-200'
-      }`}>
-        {exercise.difficulty}
-      </span>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="text-center mb-12">
+        <span className="uppercase text-primary font-semibold">Exercices</span>
+        <h1 className="text-4xl font-bold mb-4">Exercices de respiration</h1>
+      </div>
+      
+      <div className="max-w-3xl mx-auto bg-white p-8 rounded-xl shadow-sm">
+        <p className="text-gray-600 mb-8">
+          Découvrez différentes techniques de respiration pour gérer votre stress.
+        </p>
+        
+        {/* Liste des exercices à venir */}
+        <div className="space-y-4">
+          {/* Contenu des exercices sera ajouté ici */}
+        </div>
+      </div>
+
+      <div className='w-full mt-8 flex justify-center'>
+        <Link to="/" className='w-fit flex justify-center gap-4 font-semibold leading-6 text-gray-900 bg-secondary py-2 px-6 rounded border-2 border-secondary text-black hover:bg-transparent hover:border-secondary transition duration-300 ease'>
+          Retourner au menu d'accueil
+          <span aria-hidden="true">&rarr;</span>
+        </Link>
+      </div>
     </div>
   );
 };
