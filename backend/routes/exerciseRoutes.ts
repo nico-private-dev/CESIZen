@@ -3,6 +3,6 @@ import { getExercises } from '../controllers/exerciseController';
 
 const router = express.Router();
 
-router.get('/', getExercises);
+router.get('/exercice-respiration', getExercises);
 
 export default router;

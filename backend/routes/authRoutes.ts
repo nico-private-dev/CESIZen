@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post('/register', signUp);
 router.post('/login', signIn);
-router.get('/me', verifyToken, getMe);
+router.get('/mon-compte', verifyToken, getMe);
 router.get('/admin', verifyToken, verifyRole(['admin']), (req, res) => {
   res.send('Admin Content');
 });
