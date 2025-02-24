@@ -34,7 +34,15 @@ const Home: React.FC = () => {
       icon: <BsBook className="w-8 h-8" />,
       link: "/information",
       isAvailable: true,
-      className: "col-span-full md:col-span-1 md:row-span-2"
+      className: "col-span-full md:col-span-1 md:row-span-1"
+    },
+    {
+      title: "Activités détentes",
+      description: "Gérer votre stress en vous amusant",
+      icon: <BsPerson className="w-8 h-8" />,
+      link: "#",
+      isAvailable: false,
+      className: "col-span-full md:col-span-1 md:row-span-1"
     },
     {
       title: "Tracking d'émotions",

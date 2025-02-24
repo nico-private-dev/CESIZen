@@ -29,7 +29,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const token = localStorage.getItem('token');
       if (token) {
         try {
-          const response = await axios.get('http://localhost:5001/api/aut/mon-compte', {
+          const response = await axios.get('http://localhost:5001/api/auth/mon-compte', {
             headers: { Authorization: `Bearer ${token}` },
           });
           setUser(response.data);
