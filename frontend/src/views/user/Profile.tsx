@@ -15,8 +15,17 @@ const Profile: React.FC = () => {
           <ProfileInfo user={user} />
           <ProfileActions />
         </div>
-        <div className='w-full mt-8'>
+        <div className='w-full mt-8 flex flex-col gap-4'>
           <Link to={"/"} className='w-full flex justify-center gap-4 font-semibold leading-6 text-gray-900 bg-secondary py-2 px-6 rounded border-2 border-secondary text-black hover:bg-transparent hover:border-secondary transition duration-300 ease'>Retourner au menu d'accueil<span aria-hidden="true">&rarr;</span></Link>
+          {user?.role?.name === 'admin' && (
+              <Link 
+                to="/admin" 
+                className='w-full flex justify-center gap-4 font-semibold leading-6 text-white bg-primary py-2 px-6 rounded border-2 border-primary hover:bg-transparent hover:text-primary transition duration-300 ease'
+              >
+                Aller à l'espace admin
+                <span aria-hidden="true">&rarr;</span>
+              </Link>
+            )}
         </div>
       </div>
     </>
