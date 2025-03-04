@@ -9,5 +9,3 @@ export const getExercises = async (req: Request, res: Response) => {
       res.status(500).json({ message: error?.message || 'Une erreur est survenue' });
     }
   };
-
-// Ajoutez d'autres contrôleurs selon vos besoins

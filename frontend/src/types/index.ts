@@ -1,11 +1,27 @@
 export interface User {
-   _id: string;
-   username: string;
-   email: string;
-   firstname: string;
-   lastname: string;
-   isAdmin: boolean;
- }
+  _id: string;
+  username: string;
+  email: string;
+  firstname: string;
+  lastname: string;
+  isAdmin: boolean;
+  role?: {
+    name: string;
+    permissions?: string[];
+  };
+}
+
+export interface AuthResponse {
+  result: User;
+  token: string;
+}
+
+export interface AuthContextState {
+  user: User | null;
+  isAuthenticated: boolean;
+  loading: boolean;
+  error: string | null;
+}
  
  export interface Exercise {
    _id: string;
