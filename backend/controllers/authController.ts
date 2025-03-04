@@ -29,7 +29,7 @@ const setTokenCookies = (res: Response, userId: string) => {
 };
 
 export const signUp = async (req: AuthRequest, res: Response) => {
-  const { firstname, lastname, email, password, roleName } = req.body;
+  const { username, firstname, lastname, email, password, roleName } = req.body;
 
   try {
     const existingUser = await UserModel.findOne({ email });
@@ -45,6 +45,7 @@ export const signUp = async (req: AuthRequest, res: Response) => {
     const hashedPassword = await bcrypt.hash(password, 12);
 
     const user = await UserModel.create({
+      username,
       firstname,
       lastname,
       email,
@@ -63,26 +64,36 @@ export const signUp = async (req: AuthRequest, res: Response) => {
 };
 
 export const signIn = async (req: AuthRequest, res: Response) => {
-  const { email, password } = req.body;
+  const { login, password } = req.body;
 
   try {
-    const existingUser = await UserModel.findOne({ email }).populate('role');
+    // Recherche par email OU username
+    const existingUser = await UserModel.findOne({
+      $or: [
+        { email: login },
+        { username: login }
+      ]
+    }).populate('role');
+
     if (!existingUser) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: 'Utilisateur non trouvé' });
     }
 
+    // Reste de votre logique existante
     const isPasswordCorrect = await bcrypt.compare(password, existingUser.password);
+
     if (!isPasswordCorrect) {
-      return res.status(400).json({ message: 'Invalid credentials' });
+      return res.status(400).json({ message: 'Mot de passe incorrect' });
     }
 
     setTokenCookies(res, existingUser._id);
 
     const { password: _, ...userResponse } = existingUser.toObject();
     res.status(200).json({ result: userResponse });
+
   } catch (error) {
-    console.error('Error during sign in:', error);
-    res.status(500).json({ message: 'Something went wrong' });
+    console.error('Erreur de connexion:', error);
+    res.status(500).json({ message: 'Une erreur est survenue' });
   }
 };
 
@@ -95,8 +106,14 @@ export const refresh = async (req: Request, res: Response) => {
 
   try {
     const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET!) as { _id: string };
-    const accessToken = generateAccessToken(decoded._id);
+    const user = await UserModel.findById(decoded._id).populate('role');
 
+    if (!user) {
+      return res.status(401).json({ message: 'User not found' });
+    }
+
+    const accessToken = generateAccessToken(user._id);
+    
     res.cookie('accessToken', accessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
@@ -104,15 +121,28 @@ export const refresh = async (req: Request, res: Response) => {
       maxAge: 15 * 60 * 1000
     });
 
-    res.status(200).json({ message: 'Token refreshed successfully' });
+    const { password: _, ...userResponse } = user.toObject();
+    res.status(200).json({ result: userResponse });
   } catch (error) {
     res.status(401).json({ message: 'Invalid refresh token' });
   }
 };
 
 export const logout = (req: Request, res: Response) => {
-  res.cookie('accessToken', '', { maxAge: 0 });
-  res.cookie('refreshToken', '', { maxAge: 0 });
+  res.cookie('accessToken', '', { 
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'strict',
+    maxAge: 0 
+  });
+  
+  res.cookie('refreshToken', '', { 
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'strict',
+    maxAge: 0 
+  });
+  
   res.status(200).json({ message: 'Logged out successfully' });
 };
 
@@ -128,5 +158,92 @@ export const getMe = async (req: AuthRequest, res: Response) => {
   } catch (error) {
     console.error('Error fetching user:', error);
     res.status(500).json({ message: 'Something went wrong' });
+  }
+};
+
+export const updateUsername = async (req: AuthRequest, res: Response) => {
+  const { username } = req.body;
+  
+  if (!username || username.length < 3) {
+    return res.status(400).json({ message: 'Le nom d\'utilisateur doit contenir au moins 3 caractères' });
+  }
+  
+  try {
+    // Vérifier si le nom d'utilisateur est déjà pris
+    const existingUser = await UserModel.findOne({ username, _id: { $ne: req.user?._id } });
+    if (existingUser) {
+      return res.status(400).json({ message: 'Ce nom d\'utilisateur est déjà utilisé' });
+    }
+    
+    // Mettre à jour le nom d'utilisateur
+    const updatedUser = await UserModel.findByIdAndUpdate(
+      req.user?._id,
+      { username },
+      { new: true }
+    ).populate('role');
+    
+    if (!updatedUser) {
+      return res.status(404).json({ message: 'Utilisateur non trouvé' });
+    }
+    
+    const { password: _, ...userResponse } = updatedUser.toObject();
+    res.status(200).json({ message: 'Nom d\'utilisateur mis à jour avec succès', user: userResponse });
+  } catch (error) {
+    console.error('Erreur lors de la mise à jour du nom d\'utilisateur:', error);
+    res.status(500).json({ message: 'Une erreur est survenue' });
+  }
+};
+
+export const changePassword = async (req: AuthRequest, res: Response) => {
+  const { currentPassword, newPassword } = req.body;
+  
+  if (!currentPassword || !newPassword) {
+    return res.status(400).json({ message: 'Les mots de passe actuels et nouveaux sont requis' });
+  }
+  
+  if (newPassword.length < 8) {
+    return res.status(400).json({ message: 'Le nouveau mot de passe doit contenir au moins 8 caractères' });
+  }
+  
+  try {
+    const user = await UserModel.findById(req.user?._id);
+    if (!user) {
+      return res.status(404).json({ message: 'Utilisateur non trouvé' });
+    }
+    
+    // Vérifier que le mot de passe actuel est correct
+    const isPasswordCorrect = await bcrypt.compare(currentPassword, user.password);
+    if (!isPasswordCorrect) {
+      return res.status(400).json({ message: 'Le mot de passe actuel est incorrect' });
+    }
+    
+    // Hacher le nouveau mot de passe
+    const hashedPassword = await bcrypt.hash(newPassword, 12);
+    
+    // Mettre à jour le mot de passe
+    await UserModel.findByIdAndUpdate(
+      req.user?._id,
+      { password: hashedPassword }
+    );
+    
+    // Déconnecter l'utilisateur en supprimant les cookies
+    res.cookie('accessToken', '', { 
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 0 
+    });
+    
+    res.cookie('refreshToken', '', { 
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 0 
+    });
+    
+    res.status(200).json({ message: 'Mot de passe changé avec succès' });
+  } catch (error) {
+    console.error('Erreur lors du changement de mot de passe:', error);
+    res.status(500).json({ message: 'Une erreur est survenue' });
   }
 };

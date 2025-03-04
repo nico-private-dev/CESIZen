@@ -1,14 +1,7 @@
-import mongoose, { Document, Schema } from 'mongoose';
-import { IInfoCategory } from './infoCategoryModel';
+import mongoose, { Schema } from 'mongoose';
+import { IInfo } from '../types/infos';
 
-export interface IInfo extends Document {
-  title: string;
-  content: string;
-  category: IInfoCategory['_id'];
-  createdAt: Date;
-  updatedAt: Date;
-}
-
+//Création du Schéma pour les informations Cesizen
 const infoSchema = new Schema({
   title: { 
     type: String, 
@@ -20,23 +13,12 @@ const infoSchema = new Schema({
   },
   category: { 
     type: Schema.Types.ObjectId, 
-    ref: 'InfoCategory',
-    required: true
-  },
-  createdAt: { 
-    type: Date, 
-    default: Date.now 
-  },
-  updatedAt: { 
-    type: Date, 
-    default: Date.now 
+    ref: 'InfoCategory', 
+    required: true 
   }
-});
-
-// Middleware pour mettre à jour updatedAt
-infoSchema.pre<IInfo>('save', function(next) {
-  this.updatedAt = new Date();
-  next();
+}, {
+  // génère automatiquement createdAt et updatedAt
+  timestamps: true
 });
 
 export default mongoose.model<IInfo>('Info', infoSchema);

@@ -1,11 +1,7 @@
-import mongoose, { Document, Schema } from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
+import { IInfoCategory } from '../types/infos';
 
-export interface IInfoCategory extends Document {
-  name: string;
-  description?: string;
-  createdAt: Date;
-}
-
+//Création du Schéma pour les categories d'informations Cesizen
 const infoCategorySchema = new Schema({
   name: { 
     type: String, 
@@ -14,11 +10,10 @@ const infoCategorySchema = new Schema({
   },
   description: { 
     type: String 
-  },
-  createdAt: { 
-    type: Date, 
-    default: Date.now 
   }
+}, {
+  // génère automatiquement createdAt et updatedAt
+  timestamps: true
 });
 
 export default mongoose.model<IInfoCategory>('InfoCategory', infoCategorySchema);
