@@ -1,11 +1,10 @@
-import React from 'react';
 import { User } from '../../types';
 
 interface ProfileInfoProps {
   user: User;
 }
 
-const ProfileInfo: React.FC<ProfileInfoProps> = ({ user }) => {
+const ProfileInfo = ({ user }: ProfileInfoProps) => {
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">

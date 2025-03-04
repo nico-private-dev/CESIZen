@@ -25,6 +25,14 @@ const SignIn: React.FC = () => {
           <h1 className='text-center mb-6'>Bienvenue sur CESIZen</h1>
           <span className='text-center'>L'applicaiton parfaite pour gérer votre stress et en savoir plus sur sa gestion</span>
         </div>
+        <div className='flex justify-center' title="Disponible prochainement">
+          <img className='w-96' src="/img/btn-france_connect.png" alt="" />
+        </div>
+        <div className='flex gap-2 justify-between items-center mt-8'>
+          <div className='h-[1px] w-full bg-grey'></div>
+          <span>Ou</span>
+          <div className='h-[1px] w-full bg-grey'></div>
+        </div>
         <div className='bg-white p-8 border border-gray-300 rounded-lg mt-8'>
           <h2 className="text-2xl font-bold mb-4">Connexion</h2>
           <form onSubmit={handleSubmit}>
@@ -49,14 +57,6 @@ const SignIn: React.FC = () => {
             <button type="submit" className="w-full bg-primary text-white p-2 rounded border-2 border-primary font-bold hover:bg-transparent hover:border-primary hover:text-primary transition duration-300 ease">Se connecter</button>
             {error && <p className="text-red-500 mt-4">{error}</p>}
           </form>
-        </div>
-        <div className='flex gap-2 justify-between items-center mt-8'>
-          <div className='h-[1px] w-full bg-grey'></div>
-          <span>Ou</span>
-          <div className='h-[1px] w-full bg-grey'></div>
-        </div>
-        <div className='flex justify-center' title="Disponible prochainement">
-          <img src="/img/btn-france_connect.png" alt="" />
         </div>
       </div>
   );

@@ -21,34 +21,41 @@ import {
 import { BsLungs, BsEmojiSmile, BsGraphUp, BsPerson } from 'react-icons/bs';
 
 
-const tools = [
+interface Tool {
+  name: string;
+  description: string;
+  href: string;
+  icon: React.ComponentType<{ className?: string }>;
+}
+
+const tools: Tool[] = [
   {
     name: 'Exercice de respiration',
     description: 'Apprenez à gérer votre stress grâce à des exercices de respiration guidés',
     href: '/exercice-respiration',
-    icon: BsLungs, // Remplacez par l'icône appropriée
+    icon: BsLungs,
   },
   {
     name: 'Diagnostic',
     description: 'Évaluez votre niveau de stress',
     href: '#',
-    icon: BsGraphUp, // Remplacez par l'icône appropriée
+    icon: BsGraphUp,
   },
   {
     name: 'Tracker d\'émotions',
     description: 'Suivez vos émotions au quotidien',
     href: '#',
-    icon: BsEmojiSmile, // Remplacez par l'icône appropriée
+    icon: BsEmojiSmile,
   },
   {
     name: 'Activités détentes',
     description: 'Gérez votre stress grâce à des activités relaxantes',
     href: '#',
-    icon: BsPerson, // Remplacez par l'icône appropriée
+    icon: BsPerson,
   }
 ];
 
-const Navbar: React.FC = () => {
+const Navbar = () => {
   const { isAuthenticated, logout } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -96,7 +103,7 @@ const Navbar: React.FC = () => {
                     className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm hover:bg-gray-50"
                   >
                     <div className="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
-                      <item.icon aria-hidden="true" className="h-6 w-6 text-gray-600 group-hover:text-indigo-600" />
+                      <item.icon aria-hidden="true" className="h-6 w-6 text-gray-600 group-hover:text-secondary" />
                     </div>
                     <div className="flex-auto">
                       <Link to={item.href} className="block font-semibold text-gray-900">

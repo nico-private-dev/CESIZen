@@ -13,7 +13,7 @@ const Profile: React.FC = () => {
         <div className="bg-white p-8 rounded-xl shadow-sm">
           <h1 className="text-3xl font-bold mb-6">Mon compte</h1>
           <ProfileInfo user={user} />
-          <ProfileActions />
+          <ProfileActions user={user} />
         </div>
         <div className='w-full mt-8 flex flex-col gap-4'>
           <Link to={"/"} className='w-full flex justify-center gap-4 font-semibold leading-6 text-gray-900 bg-secondary py-2 px-6 rounded border-2 border-secondary text-black hover:bg-transparent hover:border-secondary transition duration-300 ease'>Retourner au menu d'accueil<span aria-hidden="true">&rarr;</span></Link>

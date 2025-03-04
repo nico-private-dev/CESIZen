@@ -10,7 +10,7 @@ import AdminDashboard from './views/admin/Backoffice';
 import PrivateRoute from './components/Auth/PrivateRoute';
 import { AuthProvider } from './context/AuthContext';
 
-const App: React.FC = () => {
+const App = () => {
   return (
     <AuthProvider>
       <Router>
