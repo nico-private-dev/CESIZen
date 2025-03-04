@@ -2,16 +2,16 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
-const SignIn: React.FC = () => {
-  const [email, setEmail] = useState('');
+const SignIn = () => {
+  const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
-  const { login, error } = useAuth();
+  const { login: loginFn, error } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await login(email, password);
+      await loginFn(login, password);
       localStorage.setItem('justLoggedIn', 'true');
       navigate('/');
     } catch (err) {
@@ -37,11 +37,11 @@ const SignIn: React.FC = () => {
           <h2 className="text-2xl font-bold mb-4">Connexion</h2>
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
-              <label className="block text-gray-700">Email</label>
+              <label className="block text-gray-700">Nom d'utilisateur ou email</label>
               <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                type="text"
+                value={login}
+                onChange={(e) => setLogin(e.target.value)}
                 className="w-full p-2 border border-gray-300 rounded mt-1"
               />
             </div>

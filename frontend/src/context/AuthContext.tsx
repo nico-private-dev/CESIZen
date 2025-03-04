@@ -1,63 +1,77 @@
-//Import
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import type { AuthContextState, User } from '../types';
+import type { AuthContextProps } from '../types/auth';
+import type { IUser } from '../types/user';
 import axios from 'axios';
 
-//Interface
 interface AuthProviderProps {
   children: React.ReactNode;
 }
 
-interface AuthContextProps extends AuthContextState {
-  register: (firstname: string, lastname: string, email: string, password: string, roleName: string) => Promise<void>;
-  login: (email: string, password: string) => Promise<void>;
-  logout: () => Promise<void>;
-}
-
 // Configuration de axios
-axios.defaults.withCredentials = true; 
 const api = axios.create({
   baseURL: 'http://localhost:5001/api',
   withCredentials: true
 });
 
-// Gestion du renouvellement automatique du token
-api.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    const originalRequest = error.config;
-    if (error.response.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
-      try {
-        await api.post('/auth/refresh');
-        return api(originalRequest);
-      } catch (refreshError) {
-        return Promise.reject(refreshError);
-      }
-    }
-    return Promise.reject(error);
-  }
-);
-
-// Initialisation du contexte
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
-
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<IUser | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Fonction pour vérifier l'authentification
+  // Configurer l'intercepteur à l'intérieur du composant pour avoir accès aux setters
+  useEffect(() => {
+    const interceptor = api.interceptors.response.use(
+      (response) => response,
+      async (error) => {
+        const originalRequest = error.config;
+        
+        if (error.response?.status !== 401 || originalRequest._retry) {
+          return Promise.reject(error);
+        }
+
+        originalRequest._retry = true;
+
+        try {
+          const response = await api.post('/auth/refresh');
+          if (response.data?.result) {
+            setUser(response.data.result);
+            setIsAuthenticated(true);
+            return api(originalRequest);
+          } else {
+            setUser(null);
+            setIsAuthenticated(false);
+            return Promise.reject(error);
+          }
+        } catch (refreshError) {
+          setUser(null);
+          setIsAuthenticated(false);
+          return Promise.reject(refreshError);
+        }
+      }
+    );
+
+    // Nettoyer l'intercepteur quand le composant est démonté
+    return () => {
+      api.interceptors.response.eject(interceptor);
+    };
+  }, []);
+
+  // Fonction pour vérifier l'authentification
   useEffect(() => {
     const checkAuth = async () => {
       try {
         const response = await api.get('/auth/mon-compte');
         setUser(response.data);
         setIsAuthenticated(true);
-      } catch (err) {
-        console.error('Auth check failed:', err);
+      } catch (err: any) {
+        if (err?.response?.status !== 401) {
+          console.error('Auth check failed:', err);
+        }
+        setUser(null);
+        setIsAuthenticated(false);
       } finally {
         setLoading(false);
       }
@@ -67,9 +81,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   }, []);
 
   // Fonction pour l'inscription
-  const register = async (firstname: string, lastname: string, email: string, password: string, roleName: string) => {
+  const register = async (username: string, firstname: string, lastname: string, email: string, password: string, roleName: string) => {
     try {
       const response = await api.post('/auth/register', {
+        username,
         firstname,
         lastname,
         email,
@@ -86,10 +101,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   // Fonction pour se connecter
-  const login = async (email: string, password: string) => {
+  const login = async (login: string, password: string) => {
     try {
       const response = await api.post('/auth/login', {
-        email,
+        login,
         password
       });
       setUser(response.data.result);
@@ -101,7 +116,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   };
 
-  // Fonction pour se déconnecter
+  // Fonction pour se déconnecter
   const logout = async () => {
     try {
       await api.post('/auth/logout');
@@ -112,8 +127,57 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   };
 
+  // Fonction pour mettre à jour le nom d'utilisateur
+  const updateUsername = async (newUsername: string) => {
+    try {
+      const response = await api.put('/auth/update-username', {
+        username: newUsername
+      }, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+      
+      if (user) {
+        setUser({
+          ...user,
+          username: newUsername
+        });
+      }
+      
+      setError(null);
+      return response.data;
+    } catch (err: any) {
+      setError(err.response?.data?.message || 'Une erreur est survenue lors de la mise à jour du nom d\'utilisateur');
+      throw err;
+    }
+  };
+
+  // Fonction pour changer le mot de passe
+  const changePassword = async (currentPassword: string, newPassword: string) => {
+    try {
+      await api.put('/auth/change-password', {
+        currentPassword,
+        newPassword
+      }, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+      
+      setError(null);
+      
+      // Déconnexion après changement de mot de passe
+      await logout();
+      
+    } catch (err: any) {
+      setError(err.response?.data?.message || 'Une erreur est survenue lors du changement de mot de passe');
+      throw err;
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, loading, error, register, login, logout }}>
+    <AuthContext.Provider value={{ user, isAuthenticated, loading, error, register, login, logout, changePassword, updateUsername }}>
       {children}
     </AuthContext.Provider>
   );

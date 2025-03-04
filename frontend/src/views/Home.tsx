@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Link } from 'react-router-dom';
 import { BsLungs, BsBook, BsEmojiSmile, BsGraphUp, BsPerson } from 'react-icons/bs';
 
-const Home: React.FC = () => {
+const Home = () => {
   const { user } = useAuth();
   const [showWelcome, setShowWelcome] = useState(false);
 
@@ -76,7 +76,7 @@ const Home: React.FC = () => {
       {showWelcome && (
         <div className="fixed top-24 right-4 flex items-center w-96 p-4 text-gray-500 bg-lowgrey rounded-lg shadow-lg" role="alert">
           <div className="ms-3 text-sm font-normal">
-            <span className="block font-bold mb-1 text-black">Bienvenue, <span className='text-primary'>{user.firstname} !</span></span>
+            <span className="block font-bold mb-1 text-black">Bienvenue, <span className='text-primary'>{user?.firstname} !</span></span>
             <span className="block text-gray-700 text-black">Vous êtes maintenant connecté et prêt à gérer votre stress pleinement</span>
           </div>
           <button 

@@ -1,13 +1,8 @@
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { User } from '../../types';
 
-interface ProfileActionsProps {
-  user: User;
-}
-
-const ProfileActions = ({ user }: ProfileActionsProps) => {
+const ProfileActions = () => {
   const { logout } = useAuth();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
@@ -26,7 +21,6 @@ const ProfileActions = ({ user }: ProfileActionsProps) => {
 
   return (
     <div className="mt-8 space-y-4">
-      <p className="text-gray-600">Connecté en tant que {user.email}</p>
       <button 
         onClick={handleLogout}
         disabled={isLoading}

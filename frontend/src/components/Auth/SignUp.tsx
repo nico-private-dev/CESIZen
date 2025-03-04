@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
-const SignUp: React.FC = () => {
+const SignUp = () => {
+  const [username, setUsername] = useState('');
   const [firstname, setFirstname] = useState('');
   const [lastname, setLastname] = useState('');
   const [email, setEmail] = useState('');
@@ -22,7 +23,7 @@ const SignUp: React.FC = () => {
     }
 
     try {
-      await register(firstname, lastname, email, password, 'user'); // ou 'admin' selon le rôle souhaité
+      await register(username, firstname, lastname, email, password, 'user'); // ou 'admin' selon le rôle souhaité
       navigate('/');
     } catch (err) {
       console.error(err);
@@ -57,6 +58,16 @@ const SignUp: React.FC = () => {
                   className="w-full p-2 border border-gray-300 rounded mt-1"
                 />
               </div>
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700">Nom d'utilisateur</label>
+              <input
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="w-full p-2 border border-gray-300 rounded mt-1"
+                required
+              />
             </div>
             <div className="mb-4">
               <label className="block text-gray-700">Email</label>

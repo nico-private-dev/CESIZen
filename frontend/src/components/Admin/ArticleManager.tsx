@@ -1,22 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import type { IInfo, ICategory } from '../../types/info';
 
-interface Category {
-  _id: string;
-  name: string;
-}
-
-interface Article {
-  _id: string;
-  title: string;
-  content: string;
-  category: Category;
-  createdAt: string;
-}
-
-const ArticleManager: React.FC = () => {
-  const [articles, setArticles] = useState<Article[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
+const ArticleManager = () => {
+  const [articles, setArticles] = useState<IInfo[]>([]);
+  const [categories, setCategories] = useState<ICategory[]>([]);
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -29,7 +17,7 @@ const ArticleManager: React.FC = () => {
 
   const fetchArticles = async () => {
     try {
-      const response = await axios.get<Article[]>('http://localhost:5001/api/info/articles');
+      const response = await axios.get<IInfo[]>('http://localhost:5001/api/info/articles');
       setArticles(response.data);
     } catch (err: any) {
       setError(err.message);
@@ -38,7 +26,7 @@ const ArticleManager: React.FC = () => {
   
   const fetchCategories = async () => {
     try {
-      const response = await axios.get<Category[]>('http://localhost:5001/api/info/categories');
+      const response = await axios.get<ICategory[]>('http://localhost:5001/api/info/categories');
       setCategories(response.data);
       if (response.data.length > 0) {
         setSelectedCategory(response.data[0]._id);
@@ -51,7 +39,7 @@ const ArticleManager: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post<Article>(
+      const response = await axios.post<IInfo>(
         'http://localhost:5001/api/info/articles',
         {
           title,

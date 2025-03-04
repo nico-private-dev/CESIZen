@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import CategoryManager from '../../components/Admin/CategoryManager';
 import ArticleManager from '../../components/Admin/ArticleManager';
 
-const AdminDashboard: React.FC = () => {
+const AdminDashboard = () => {
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState<'categories' | 'articles'>('categories');
   console.log('Current user:', user);

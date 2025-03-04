@@ -1,18 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
+import type { IInfo } from '../types/info';
 
-interface IInfo {
-  _id: string;
-  title: string;
-  content: string;
-  category: {
-    _id: string;
-    name: string;
-  };
-  createdAt: string;
-}
-
-const Information: React.FC = () => {
+const Information = () => {
   const [articles, setArticles] = useState<IInfo[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
