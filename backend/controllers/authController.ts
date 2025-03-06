@@ -1,13 +1,10 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
-import UserModel, { IUser } from '../models/userModel';
+import UserModel from '../models/userModel';
 import RoleModel from '../models/roleModels';
 import { generateAccessToken, generateRefreshToken } from '../utils/generateToken';
 import jwt from 'jsonwebtoken';
-
-interface AuthRequest extends Request {
-  user?: IUser;
-}
+import { IAuthRequest } from '../types/auth';
 
 const setTokenCookies = (res: Response, userId: string) => {
   const accessToken = generateAccessToken(userId);
@@ -28,7 +25,7 @@ const setTokenCookies = (res: Response, userId: string) => {
   });
 };
 
-export const signUp = async (req: AuthRequest, res: Response) => {
+export const signUp = async (req: IAuthRequest, res: Response) => {
   const { username, firstname, lastname, email, password, roleName } = req.body;
 
   try {
@@ -63,7 +60,7 @@ export const signUp = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const signIn = async (req: AuthRequest, res: Response) => {
+export const signIn = async (req: IAuthRequest, res: Response) => {
   const { login, password } = req.body;
 
   try {
@@ -146,7 +143,7 @@ export const logout = (req: Request, res: Response) => {
   res.status(200).json({ message: 'Logged out successfully' });
 };
 
-export const getMe = async (req: AuthRequest, res: Response) => {
+export const getMe = async (req: IAuthRequest, res: Response) => {
   try {
     const user = await UserModel.findById(req.user?._id).populate('role');
     if (!user) {
@@ -161,7 +158,7 @@ export const getMe = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const updateUsername = async (req: AuthRequest, res: Response) => {
+export const updateUsername = async (req: IAuthRequest, res: Response) => {
   const { username } = req.body;
   
   if (!username || username.length < 3) {

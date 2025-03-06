@@ -1,19 +1,16 @@
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import UserModel, { IUser } from '../models/userModel';
+import UserModel from '../models/userModel';
 import RoleModel from '../models/roleModels';
+import { IAuthRequest } from '../types/auth';
 
-interface AuthRequest extends Request {
-  user?: IUser;
-}
-
-export const verifyToken = async (req: AuthRequest, res: Response, next: NextFunction) => {
+export const verifyToken = async (req: IAuthRequest, res: Response, next: NextFunction) => {
   const accessToken = req.cookies.accessToken;
   
   if (!accessToken) {
     const refreshToken = req.cookies.refreshToken;
     if (!refreshToken) {
-      return res.status(401).json({ message: 'Access Denied' });
+      return res.status(401).json({ message: 'Accès non autorisé' });
     }
 
     try {
@@ -22,7 +19,7 @@ export const verifyToken = async (req: AuthRequest, res: Response, next: NextFun
       const user = await UserModel.findById(decoded._id);
       
       if (!user) {
-        return res.status(401).json({ message: 'User not found' });
+        return res.status(401).json({ message: 'Utilisateur non trouvé' });
       }
 
       // Générer un nouveau access token
@@ -39,7 +36,7 @@ export const verifyToken = async (req: AuthRequest, res: Response, next: NextFun
       req.user = user;
       return next();
     } catch (err) {
-      return res.status(401).json({ message: 'Invalid Refresh Token' });
+      return res.status(401).json({ message: 'Le rafraichissement du token est impossible' });
     }
   }
 
@@ -48,26 +45,26 @@ export const verifyToken = async (req: AuthRequest, res: Response, next: NextFun
     const user = await UserModel.findById(decoded._id);
     
     if (!user) {
-      return res.status(401).json({ message: 'User not found' });
+      return res.status(401).json({ message: 'Utilisateur non trouvé' });
     }
 
     req.user = user;
     next();
   } catch (err) {
-    return res.status(401).json({ message: 'Invalid Access Token' });
+    return res.status(401).json({ message: 'Le token est invalide' });
   }
 };
 
 export const verifyRole = (roleNames: string[]) => {
-  return async (req: AuthRequest, res: Response, next: NextFunction) => {
+  return async (req: IAuthRequest, res: Response, next: NextFunction) => {
     const user = await UserModel.findById(req.user?._id).populate('role');
     if (!user) {
-      return res.status(403).json({ message: 'Access Denied' });
+      return res.status(403).json({ message: 'Accès non autorisé' });
     }
 
     const role = await RoleModel.findById(user.role);
     if (!role || !roleNames.includes(role.name)) {
-      return res.status(403).json({ message: 'Access Denied' });
+      return res.status(403).json({ message: 'Accès non autorisé' });
     }
 
     next();

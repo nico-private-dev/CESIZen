@@ -7,6 +7,7 @@ import authRoutes from './routes/authRoutes';
 import roleRoutes from './routes/roleRoutes';
 import infoRoutes from './routes/infoRoutes';
 import infoCategoryRoutes from './routes/infoCategoryRoutes';
+import userRoutes from './routes/userRoutes';
 
 dotenv.config();
 
@@ -31,6 +32,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api', roleRoutes);
 app.use('/api/info', infoRoutes);
 app.use('/api/info', infoCategoryRoutes);
+app.use('/api', userRoutes);
 
 app.listen(PORT, () => {
   console.log(`Le serveur tourne sur le port ${PORT} 🔥`);
