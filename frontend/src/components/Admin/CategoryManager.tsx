@@ -1,14 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import type { ICategory } from '../../types/info';
 
-interface Category {
-  _id: string;
-  name: string;
-  description: string;
-}
-
-const CategoryManager: React.FC = () => {
-  const [categories, setCategories] = useState<Category[]>([]);
+const CategoryManager = () => {
+  const [categories, setCategories] = useState<ICategory[]>([]);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -19,7 +14,7 @@ const CategoryManager: React.FC = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get<Category[]>('http://localhost:5001/api/info/categories');
+      const response = await axios.get<ICategory[]>('http://localhost:5001/api/info/categories');
       setCategories(response.data);
     } catch (err: any) {
       setError(err.message);
@@ -29,7 +24,7 @@ const CategoryManager: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post<Category>('http://localhost:5001/api/info/categories', {
+      const response = await axios.post<ICategory>('http://localhost:5001/api/info/categories', {
         name,
         description
       }, {

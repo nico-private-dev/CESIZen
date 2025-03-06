@@ -153,31 +153,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   };
 
-  // Fonction pour changer le mot de passe
-  const changePassword = async (currentPassword: string, newPassword: string) => {
-    try {
-      await api.put('/auth/change-password', {
-        currentPassword,
-        newPassword
-      }, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
-        }
-      });
-      
-      setError(null);
-      
-      // Déconnexion après changement de mot de passe
-      await logout();
-      
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Une erreur est survenue lors du changement de mot de passe');
-      throw err;
-    }
-  };
-
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, loading, error, register, login, logout, changePassword, updateUsername }}>
+    <AuthContext.Provider value={{ user, isAuthenticated, loading, error, register, login, logout, updateUsername }}>
       {children}
     </AuthContext.Provider>
   );

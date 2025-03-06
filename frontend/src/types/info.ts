@@ -10,6 +10,7 @@ export interface IInfo {
 }
 
 export interface ICategory {
-    _id: string;
-    name: string;
-  }
+  _id: string;
+  name: string;
+  description: string;
+}

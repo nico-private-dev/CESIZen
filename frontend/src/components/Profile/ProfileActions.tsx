@@ -1,6 +1,7 @@
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { BsBoxArrowRight } from 'react-icons/bs';
 
 const ProfileActions = () => {
   const { logout } = useAuth();
@@ -20,16 +21,18 @@ const ProfileActions = () => {
   };
 
   return (
-    <div className="mt-8 space-y-4">
+    <div className="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
+      <h3 className="text-lg font-semibold mb-4">Actions</h3>
       <button 
         onClick={handleLogout}
         disabled={isLoading}
-        className={`w-full bg-primary text-white p-2 rounded border-2 border-primary font-bold transition duration-300 ease
+        className={`w-full flex items-center justify-center gap-2 bg-primary text-white p-3 rounded-lg font-medium transition duration-300 ease
           ${isLoading 
             ? 'opacity-50 cursor-not-allowed' 
-            : 'hover:bg-transparent hover:text-primary'
+            : 'hover:bg-primary-dark'
           }`}
       >
+        <BsBoxArrowRight className="w-5 h-5" />
         {isLoading ? 'Déconnexion...' : 'Se déconnecter'}
       </button>
     </div>
