@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import CategoryManager from '../../components/Admin/CategoryManager';
 import ArticleManager from '../../components/Admin/ArticleManager';
+import UsersManager from '../../components/Admin/UsersManager';
 
 const AdminDashboard = () => {
   const { user } = useAuth();
@@ -53,7 +54,7 @@ const AdminDashboard = () => {
 
       {/* Content */}
       <div className="mt-6">
-        {activeTab === 'categories' ? <CategoryManager /> : <ArticleManager />}
+        {activeTab === 'categories' ? <CategoryManager /> : activeTab === 'articles' ? <ArticleManager /> : <UsersManager />}
       </div>
     </div>
   );

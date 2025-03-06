@@ -10,3 +10,9 @@ export interface IUser {
     permissions?: string[];
   };
 }
+
+export interface IRole {
+  _id: string;
+  name: string;
+  permissions?: string[] | undefined;
+}
