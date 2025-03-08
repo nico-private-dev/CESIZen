@@ -130,16 +130,16 @@ const Navbar = () => {
               >
                 <UserCircleIcon className="h-6 w-6" />
               </Link>
-              <button onClick={logout} className="text-sm font-semibold leading-6 text-gray-900 bg-secondary py-2 px-6 rounded border-2 border-secondary text-black hover:bg-transparent hover:border-secondary transition duration-300 ease">
+              <button onClick={logout} className="text-sm font-semibold leading-6 text-gray-900 bg-secondary py-2 px-6 rounded-lg border-2 border-secondary text-black hover:bg-transparent hover:border-secondary transition duration-300 ease">
                 Se déconnecter <span aria-hidden="true">&rarr;</span>
               </button>
             </>
           ) : (
             <>
-              <Link to="/register" className="text-sm font-semibold leading-6 text-gray-900 bg-primary py-2 px-6 rounded border-2 border-primary text-white hover:bg-transparent hover:border-primary hover:text-primary transition duration-300 ease">
+              <Link to="/register" className="text-sm font-semibold leading-6 text-gray-900 bg-primary py-2 px-6 rounded-lg border-2 border-primary text-white hover:bg-transparent hover:border-primary hover:text-primary transition duration-300 ease">
                 S'inscrire
               </Link>
-              <Link to="/login" className="text-sm font-semibold leading-6 text-gray-900 bg-secondary py-2 px-6 rounded border-2 border-secondary text-black hover:bg-transparent hover:border-secondary transition duration-300 ease">
+              <Link to="/login" className="text-sm font-semibold leading-6 text-gray-900 bg-secondary py-2 px-6 rounded-lg border-2 border-secondary text-black hover:bg-transparent hover:border-secondary transition duration-300 ease">
                 Se connecter <span aria-hidden="true">&rarr;</span>
               </Link>
             </>
@@ -203,16 +203,16 @@ const Navbar = () => {
               </div>
               <div className="py-6">
                 {isAuthenticated ? (
-                  <button onClick={logout} className="text-sm font-semibold leading-6 text-gray-900 bg-secondary py-2 px-6 rounded border-2 border-secondary text-black hover:bg-transparent hover:border-secondary transition duration-300 ease">
+                  <button onClick={logout} className="text-sm font-semibold leading-6 text-gray-900 bg-secondary py-2 px-6 rounded-lg border-2 border-secondary text-black hover:bg-transparent hover:border-secondary transition duration-300 ease">
                     Se déconnecter <span aria-hidden="true">&rarr;</span>
                   </button>
                 ) : (
                   <>
                     <div className='flex gap-4'>
-                      <Link to="/register" className="text-sm font-semibold leading-6 text-gray-900 bg-primary py-2 px-6 rounded border-2 border-primary text-white hover:bg-transparent hover:border-primary hover:text-primary transition duration-300 ease">
+                      <Link to="/register" className="text-sm font-semibold leading-6 text-gray-900 bg-primary py-2 px-6 rounded-lg border-2 border-primary text-white hover:bg-transparent hover:border-primary hover:text-primary transition duration-300 ease">
                         S'inscrire
                       </Link>
-                      <Link to="/login" className="text-sm font-semibold leading-6 text-gray-900 bg-secondary py-2 px-6 rounded border-2 border-secondary text-black hover:bg-transparent hover:border-secondary transition duration-300 ease">
+                      <Link to="/login" className="text-sm font-semibold leading-6 text-gray-900 bg-secondary py-2 px-6 rounded-lg border-2 border-secondary text-black hover:bg-transparent hover:border-secondary transition duration-300 ease">
                         Se connecter <span aria-hidden="true">&rarr;</span>
                       </Link>
                     </div>

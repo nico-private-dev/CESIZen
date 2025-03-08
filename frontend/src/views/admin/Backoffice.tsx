@@ -23,9 +23,9 @@ const AdminDashboard = () => {
             onClick={() => setActiveTab('categories')}
             className={`${
               activeTab === 'categories'
-                ? 'border-primary text-primary'
-                : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
-            } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
+                ? 'border-primary bg-primary text-white rounded-lg'
+                : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 rounded-lg'
+            } border p-2 font-medium text-sm mb-2`}
           >
             Gestion des catégories
           </button>
@@ -33,9 +33,9 @@ const AdminDashboard = () => {
             onClick={() => setActiveTab('articles')}
             className={`${
               activeTab === 'articles'
-                ? 'border-primary text-primary'
-                : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
-            } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
+                ? 'border-primary bg-primary text-white rounded-lg'
+                : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 rounded-lg'
+            } border p-2 font-medium text-sm mb-2`}
           >
             Gestion des articles
           </button>
@@ -43,9 +43,9 @@ const AdminDashboard = () => {
             onClick={() => setActiveTab('users')}
             className={`${
               activeTab === 'users'
-                ? 'border-primary text-primary'
-                : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
-            } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
+                ? 'border-primary bg-primary text-white rounded-lg'
+                : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 rounded-lg'
+            } border p-2 font-medium text-sm mb-2`}
           >
             Gestion des utilisateurs
           </button>

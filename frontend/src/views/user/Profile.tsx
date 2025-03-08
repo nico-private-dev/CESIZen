@@ -2,7 +2,7 @@ import { useAuth } from '../../context/AuthContext';
 import ProfileInfo from '../../components/Profile/ProfileInfo';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import { BsPersonCircle, BsShieldLock, BsArrowLeft, BsGear, BsBoxArrowRight } from 'react-icons/bs';
+import { BsPersonCircle, BsArrowLeft, BsGear, BsBoxArrowRight } from 'react-icons/bs';
 
 const Profile = () => {
   const { user, logout } = useAuth();
@@ -66,12 +66,6 @@ const Profile = () => {
           <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
             <h3 className="text-lg font-semibold mb-4">Actions rapides</h3>
             <div className="space-y-3">
-              <button 
-                onClick={() => setActiveSection('security')}
-                className="w-full flex items-center justify-between p-2 text-left rounded-lg hover:bg-gray-100"
-              >
-              </button>
-              
               <button 
                 onClick={handleLogout}
                 className="w-full flex items-center justify-between p-2 text-left rounded-lg hover:bg-gray-100"

@@ -71,7 +71,7 @@ const ArticleManager = () => {
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm"
+              className="mt-1 block w-full rounded-lg border border-grey-200 focus:border-secondary focus-visible:border-secondary sm:text-sm p-2"
               required
             />
           </div>
@@ -81,7 +81,7 @@ const ArticleManager = () => {
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm"
+              className="mt-1 block w-full rounded-lg border border-grey-200 focus:border-secondary focus-visible:border-secondary sm:text-sm p-2"
               required
             >
               {categories.map((category) => (
@@ -97,7 +97,7 @@ const ArticleManager = () => {
             <textarea
               value={content}
               onChange={(e) => setContent(e.target.value)}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm"
+              className="mt-1 block w-full rounded-lg border border-grey-200 focus:border-secondary focus-visible:border-secondary sm:text-sm p-2"
               rows={6}
               required
             />
@@ -107,7 +107,7 @@ const ArticleManager = () => {
 
           <button
             type="submit"
-            className="w-full bg-primary text-white p-2 rounded border-2 border-primary font-bold hover:bg-transparent hover:text-primary transition duration-300 ease"
+            className="w-full bg-primary text-white p-2 rounded-lg border-2 border-primary font-bold hover:bg-transparent hover:text-primary transition duration-300 ease"
           >
             Publier l'article
           </button>

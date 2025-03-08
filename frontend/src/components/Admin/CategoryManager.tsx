@@ -51,7 +51,7 @@ const CategoryManager = () => {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm"
+              className="mt-1 block w-full rounded-lg border border-grey-200 focus:border-secondary focus-visible:border-secondary sm:text-sm p-2"
               required
             />
           </div>
@@ -60,7 +60,7 @@ const CategoryManager = () => {
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm"
+              className="mt-1 block w-full rounded-lg border border-grey-200 focus:border-secondary focus-visible:border-secondary sm:text-sm p-2"
               rows={3}
             />
           </div>
@@ -69,7 +69,7 @@ const CategoryManager = () => {
           )}
           <button
             type="submit"
-            className="w-full bg-primary text-white p-2 rounded border-2 border-primary font-bold hover:bg-transparent hover:text-primary transition duration-300 ease"
+            className="w-full bg-primary text-white p-2 rounded-lg border-2 border-primary font-bold hover:bg-transparent hover:text-primary transition duration-300 ease"
           >
             Ajouter la catégorie
           </button>

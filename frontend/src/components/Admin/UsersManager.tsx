@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { IUser } from '../../types/user';
 
-// Configuration d'axios avec le bon port (5001)
 const api = axios.create({
   baseURL: 'http://localhost:5001',
   withCredentials: true
@@ -13,7 +12,7 @@ function UsersManager() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const usersPerPage = 3;
+  const usersPerPage = 10;
 
   const fetchUsers = async () => {
     setLoading(true);
