@@ -118,7 +118,7 @@ const Navbar = () => {
               </div>
             </PopoverPanel>
           </Popover>
-          <Link to="/information" className="text-sm font-semibold leading-6 text-gray-900">
+          <Link to="/informations" className="text-sm font-semibold leading-6 text-gray-900">
             Informations
           </Link>
         </PopoverGroup>
@@ -196,7 +196,7 @@ const Navbar = () => {
                   À propos
                 </Link>
                 <Link
-                  to="/information"
+                  to="/informations"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold text-gray-900 hover:bg-gray-50"
                 >
                   Informations

@@ -14,3 +14,9 @@ export interface ICategory {
   name: string;
   description: string;
 }
+
+export interface IArticleFormData {
+  title: string;
+  content: string;
+  category: string;
+}

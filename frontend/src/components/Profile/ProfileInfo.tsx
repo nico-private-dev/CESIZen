@@ -13,12 +13,6 @@ const ProfileInfo = ({ user, activeSection = 'info' }: ProfileInfoProps) => {
   const [usernameError, setUsernameError] = useState<string | null>(null);
   const [usernameSuccess, setUsernameSuccess] = useState<string | null>(null);
   
-  // États pour le changement de mot de passe
-  const [isChangingPassword, setIsChangingPassword] = useState(false);
-  const [currentPassword, setCurrentPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  
   // Fonction pour gérer la modification du nom d'utilisateur
   const handleUsernameSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

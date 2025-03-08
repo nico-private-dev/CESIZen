@@ -8,6 +8,7 @@ import ExerciseView from './views/Exercise';
 import Information from './views/Information';
 import AdminDashboard from './views/admin/Backoffice';
 import PrivateRoute from './components/Auth/PrivateRoute';
+import InfoDetail from './views/InfoDetail';
 
 const App = () => {
   return (
@@ -18,7 +19,8 @@ const App = () => {
             <Route path="/login" element={<SignIn />} />
             <Route path="/register" element={<SignUp />} />
             <Route path="/exercice-respiration" element={<ExerciseView />} />
-            <Route path="/information" element={<Information />} />
+            <Route path="/informations" element={<Information />} />
+            <Route path="/informations/:id" element={<InfoDetail />} />
             <Route path="/mon-compte" element={
                 <PrivateRoute>
                   <Profile />

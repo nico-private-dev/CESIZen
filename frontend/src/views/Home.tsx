@@ -32,7 +32,7 @@ const Home = () => {
       title: "Informations sur la gestion du stress",
       description: "Découvrez des articles et conseils pour mieux comprendre et gérer votre stress",
       icon: <BsBook className="w-8 h-8" />,
-      link: "/information",
+      link: "/informations",
       isAvailable: true,
       className: "col-span-full md:col-span-1 md:row-span-1"
     },
