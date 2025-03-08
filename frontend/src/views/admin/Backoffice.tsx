@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { useAuth } from '../../context/AuthContext';
+import useAuthStore from '../../stores/useAuthStore';
 import CategoryManager from '../../components/Admin/CategoryManager';
 import ArticleManager from '../../components/Admin/ArticleManager';
 import UsersManager from '../../components/Admin/UsersManager';
 
 const AdminDashboard = () => {
-  const { user } = useAuth();
+  const { user } = useAuthStore();
   const [activeTab, setActiveTab] = useState<'categories' | 'articles' | 'users'>('categories');
 
   if (!user || (typeof user.role === 'object' ? user.role.name !== 'admin' : user.role !== 'admin')) {

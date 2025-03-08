@@ -1,11 +1,10 @@
-import React from 'react';
-import { Info } from '../types';
+import { IInfo } from '../types/info';
 
 interface InfoListProps {
-  infos: Info[];
+  infos: IInfo[];
 }
 
-const InfoList: React.FC<InfoListProps> = ({ infos }) => {
+const InfoList = ({ infos }: InfoListProps) => {
   return (
     <div className="space-y-4">
       {infos.map((info) => (

@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { ProfileInfoProps } from '../../types/profile';
-import { useAuth } from '../../context/AuthContext';
-import { BsCheckCircle, BsXCircle, BsPencil, BsShieldLock } from 'react-icons/bs';
+import useAuthStore from '../../stores/useAuthStore';
+import { BsCheckCircle, BsXCircle, BsPencil } from 'react-icons/bs';
 
 // Composant de profil avec gestion des modifications
 const ProfileInfo = ({ user, activeSection = 'info' }: ProfileInfoProps) => {
-  const { updateUsername } = useAuth();
+  const { updateUsername } = useAuthStore();
   
   // États pour la modification du nom d'utilisateur
   const [isEditingUsername, setIsEditingUsername] = useState(false);

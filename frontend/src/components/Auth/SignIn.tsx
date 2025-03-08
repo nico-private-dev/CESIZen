@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
+import useAuthStore from '../../stores/useAuthStore';
 
 const SignIn = () => {
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
-  const { login: loginFn, error } = useAuth();
+  const { login: loginFn, error } = useAuthStore();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {

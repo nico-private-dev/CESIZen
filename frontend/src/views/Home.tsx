@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { useAuth } from '../context/AuthContext';
+import useAuthStore from '../stores/useAuthStore';
 import { Link } from 'react-router-dom';
 import { BsLungs, BsBook, BsEmojiSmile, BsGraphUp, BsPerson } from 'react-icons/bs';
 
 const Home = () => {
-  const { user } = useAuth();
+  const { user } = useAuthStore();
   const [showWelcome, setShowWelcome] = useState(false);
 
   useEffect(() => {

@@ -8,11 +8,9 @@ import ExerciseView from './views/Exercise';
 import Information from './views/Information';
 import AdminDashboard from './views/admin/Backoffice';
 import PrivateRoute from './components/Auth/PrivateRoute';
-import { AuthProvider } from './context/AuthContext';
 
 const App = () => {
   return (
-    <AuthProvider>
       <Router>
         <Layout>
           <Routes>
@@ -21,26 +19,19 @@ const App = () => {
             <Route path="/register" element={<SignUp />} />
             <Route path="/exercice-respiration" element={<ExerciseView />} />
             <Route path="/information" element={<Information />} />
-            <Route 
-              path="/mon-compte" 
-              element={
+            <Route path="/mon-compte" element={
                 <PrivateRoute>
                   <Profile />
                 </PrivateRoute>
-              } 
-            />
-            <Route
-              path="/admin"
-              element={
+              } />
+            <Route path="/admin" element={
                 <PrivateRoute>
                   <AdminDashboard />
                 </PrivateRoute>
-              }
-            />
+              } />
           </Routes>
         </Layout>
       </Router>
-    </AuthProvider>
   );
 };
 

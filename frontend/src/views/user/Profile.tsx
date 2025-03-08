@@ -1,11 +1,11 @@
-import { useAuth } from '../../context/AuthContext';
+import useAuthStore from '../../stores/useAuthStore';
 import ProfileInfo from '../../components/Profile/ProfileInfo';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { BsPersonCircle, BsArrowLeft, BsGear, BsBoxArrowRight } from 'react-icons/bs';
 
 const Profile = () => {
-  const { user, logout } = useAuth();
+  const { user, logout } = useAuthStore();
   const [activeSection, setActiveSection] = useState<'info' | 'security'>('info');
 
   const handleLogout = async () => {

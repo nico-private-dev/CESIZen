@@ -1,29 +1,14 @@
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import type { IInfo } from '../types/info';
-
+import useInfoStore from '../stores/useInfoStore'
+import { useEffect } from 'react'
 const Information = () => {
-  const [articles, setArticles] = useState<IInfo[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { infos, loading, error, fetchInfos } = useInfoStore()
 
   useEffect(() => {
-    const fetchArticles = async () => {
-      try {
-        const response = await axios.get<IInfo[]>('http://localhost:5001/api/info/articles');
-        setArticles(response.data);
-        setLoading(false);
-      } catch (err: any) {
-        setError(err.message);
-        setLoading(false);
-      }
-    };
+    fetchInfos()
+  }, [fetchInfos])
 
-    fetchArticles();
-  }, []);
-
-  if (loading) return <div>Chargement...</div>;
-  if (error) return <div>Erreur: {error}</div>;
+  if (loading) return <div>Chargement...</div>
+  if (error) return <div>Erreur: {error}</div>
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -33,14 +18,14 @@ const Information = () => {
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {articles.map((article) => (
-          <div key={article._id} className="bg-white rounded-xl shadow-sm p-6">
-            <h2 className="text-xl font-semibold mb-2">{article.title}</h2>
-            <p className="text-gray-600 mb-4">{article.content.substring(0, 150)}...</p>
+        {infos.map((info) => (
+          <div key={info._id} className="bg-white rounded-xl shadow-sm p-6">
+            <h2 className="text-xl font-semibold mb-2">{info.title}</h2>
+            <p className="text-gray-600 mb-4">{info.content.substring(0, 150)}...</p>
             <div className="flex justify-between items-center">
-              <span className="text-sm text-primary">{article.category.name}</span>
+              <span className="text-sm text-primary">{info.category.name}</span>
               <span className="text-sm text-gray-500">
-                {new Date(article.createdAt).toLocaleDateString()}
+                {new Date(info.createdAt).toLocaleDateString()}
               </span>
             </div>
           </div>

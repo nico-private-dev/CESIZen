@@ -1,10 +1,10 @@
-import { useAuth } from '../../context/AuthContext';
+import useAuthStore from '../../stores/useAuthStore';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { BsBoxArrowRight } from 'react-icons/bs';
 
 const ProfileActions = () => {
-  const { logout } = useAuth();
+  const { logout } = useAuthStore();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
 
