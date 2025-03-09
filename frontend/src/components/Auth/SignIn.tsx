@@ -26,14 +26,14 @@ const SignIn = () => {
           <span className='text-center'>L'applicaiton parfaite pour gérer votre stress et en savoir plus sur sa gestion</span>
         </div>
         <div className='flex justify-center' title="Disponible prochainement">
-          <img className='w-96' src="/img/btn-france_connect.png" alt="" />
+          <img className='w-64' src="/img/btn-france_connect.png" alt="" />
         </div>
-        <div className='flex gap-2 justify-between items-center mt-8'>
+        <div className='flex gap-2 justify-between items-center'>
           <div className='h-[1px] w-full bg-grey'></div>
           <span>Ou</span>
           <div className='h-[1px] w-full bg-grey'></div>
         </div>
-        <div className='bg-white p-8 border border-gray-300 rounded-lg mt-8'>
+        <div className='bg-white p-8 border border-gray-300 rounded-lg mt-8 mb-12'>
           <h2 className="text-2xl font-bold mb-4">Connexion</h2>
           <form onSubmit={handleSubmit}>
             <div className="mb-4">

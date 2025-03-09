@@ -1,7 +1,7 @@
 import mongoose, { Schema } from 'mongoose';
 import { IUser } from '../types/user';
 
-//Création du Schéma pour les Utilisateurs Cesizen
+//Création du Schéma pour les Utilisateurs
 const userSchema: Schema = new Schema({
   username: { 
     type: String, 

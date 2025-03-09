@@ -1,7 +1,7 @@
 import mongoose, { Schema } from 'mongoose';
 import { IInfo } from '../types/infos';
 
-//Création du Schéma pour les informations Cesizen
+//Création du Schéma pour les informations
 const infoSchema = new Schema({
   title: { 
     type: String, 
@@ -16,9 +16,6 @@ const infoSchema = new Schema({
     ref: 'InfoCategory', 
     required: true 
   }
-}, {
-  // génère automatiquement createdAt et updatedAt
-  timestamps: true
 });
 
 export default mongoose.model<IInfo>('Info', infoSchema);

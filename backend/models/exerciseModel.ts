@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-//Création du Schéma pour les exercices de respirations Cesizen
+//Création du Schéma pour les exercices de respirations
 const exerciseSchema = new mongoose.Schema({
   title: { 
     type: String, 
