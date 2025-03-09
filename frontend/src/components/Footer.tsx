@@ -8,7 +8,7 @@ const Footer = () => {
     <footer className="bg-primary text-white mt-auto py-6">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row justify-between items-center">
-          <div className="mb-4 md:mb-0 w-full">
+          <div className="mb-8 md:mb-0 w-full">
             <h3 className="text-xl font-bold">CESIZen</h3>
             <p className="text-sm mt-1">Votre compagnon pour la gestion du stress</p>
             <div className='flex gap-2 mt-2'>
@@ -22,7 +22,7 @@ const Footer = () => {
               <h4 className="text-lg font-semibold mb-2">Navigation</h4>
               <ul className="space-y-1">
                 <li><Link to="/" className="hover:text-gray-300 transition-colors">Accueil</Link></li>
-                <li><Link to="/exercice-respiration" className="hover:text-gray-300 transition-colors">Exercices</Link></li>
+                <li><Link to="/exercice-respiration" className="hover:text-gray-300 transition-colors">Exercices de respiration</Link></li>
                 <li><Link to="/informations" className="hover:text-gray-300 transition-colors">Informations</Link></li>
               </ul>
             </div>

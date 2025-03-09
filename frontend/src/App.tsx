@@ -8,7 +8,7 @@ import ExerciseView from './views/Exercise';
 import Information from './views/informations/Information';
 import AdminDashboard from './views/admin/Backoffice';
 import PrivateRoute from './components/Auth/PrivateRoute';
-import InfoDetail from './views/InfoDetail';
+import InfoDetail from './views/informations/InfoDetail';
 
 const App = () => {
   return (

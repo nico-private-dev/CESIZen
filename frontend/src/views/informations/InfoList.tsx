@@ -13,14 +13,14 @@ const InfoList = ({ infos }: InfoListProps) => {
         <Link 
           to={`/informations/${info._id}`}
           key={info._id} 
-          className="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow group"
+          className="bg-white rounded-xl ring-1 ring-gray-900/5 shadow-sm p-6 hover:shadow-sm transition-shadow group"
         >
           <article>
             <div className="mb-4">
               <h2 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors">
                 {info.title}
               </h2>
-              <span className="inline-block bg-primary/10 text-primary px-3 py-1 rounded-full text-sm">
+              <span className="inline-block bg-secondary/80 text-black px-3 py-1 rounded-full text-xs">
                 {info.category.name}
               </span>
             </div>

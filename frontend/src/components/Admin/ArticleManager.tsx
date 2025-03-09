@@ -138,8 +138,8 @@ const ArticleManager = () => {
 
   return (
     <div className="space-y-8">
-      <div className="bg-white p-6 rounded-lg shadow-sm">
-        <div className="flex justify-between items-center mb-4">
+      <div className="bg-white p-6 rounded-lg ring-1 ring-gray-900/5 shadow-sm">
+        <div className="flex justify-between items-center">
           <h2 className="text-xl font-semibold">
             {isEditing ? (selectedArticleId ? 'Modifier un article' : 'Ajouter un article') : 'Gestion des articles'}
           </h2>
@@ -221,7 +221,7 @@ const ArticleManager = () => {
               <button
                 type="button"
                 onClick={resetForm}
-                className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors"
+                className="bg-secondary text-black border-2 border-secondary px-4 py-2 rounded-lg hover:bg-transparent hover:text-black transition-colors"
               >
                 Annuler
               </button>
@@ -231,7 +231,7 @@ const ArticleManager = () => {
       </div>
 
       {!isEditing && (
-        <div className="bg-white p-6 rounded-lg shadow-sm">
+        <div className="bg-white p-6 rounded-lg ring-1 ring-gray-900/5 shadow-sm">
           <h2 className="text-xl font-semibold mb-4">Articles publiés</h2>
           
           {loading && <div className="text-center py-4">Chargement...</div>}
@@ -268,7 +268,7 @@ const ArticleManager = () => {
                     : article.content}
                 </p>
                 <div className="flex justify-between items-center text-sm text-gray-500">
-                  <span className="bg-primary/10 text-primary px-2 py-1 rounded-full text-xs">
+                  <span className="bg-secondary/80 text-black px-2 py-1 rounded-full text-xs">
                     {article.category.name}
                   </span>
                   <span>{new Date(article.createdAt).toLocaleDateString('fr-FR', {

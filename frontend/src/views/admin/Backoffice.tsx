@@ -25,7 +25,7 @@ const AdminDashboard = () => {
               activeTab === 'categories'
                 ? 'border-primary bg-primary text-white rounded-lg'
                 : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 rounded-lg'
-            } border p-2 font-medium text-sm mb-2`}
+            } border p-2 font-medium text-sm mb-6`}
           >
             Gestion des catégories
           </button>
@@ -35,7 +35,7 @@ const AdminDashboard = () => {
               activeTab === 'articles'
                 ? 'border-primary bg-primary text-white rounded-lg'
                 : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 rounded-lg'
-            } border p-2 font-medium text-sm mb-2`}
+            } border p-2 font-medium text-sm mb-6`}
           >
             Gestion des articles
           </button>
@@ -45,7 +45,7 @@ const AdminDashboard = () => {
               activeTab === 'users'
                 ? 'border-primary bg-primary text-white rounded-lg'
                 : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 rounded-lg'
-            } border p-2 font-medium text-sm mb-2`}
+            } border p-2 font-medium text-sm mb-6`}
           >
             Gestion des utilisateurs
           </button>

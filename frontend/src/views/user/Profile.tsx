@@ -27,7 +27,7 @@ const Profile = () => {
       {/* Grille Bento pour le profil */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 max-w-6xl mx-auto">
         {/* Carte principale avec les informations de profil */}
-        <div className="md:col-span-3 bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+        <div className="md:col-span-3 bg-white p-6 rounded-xl ring-1 ring-gray-900/5 shadow-sm">
           <div className="flex items-center justify-between mb-6">
             <div className="flex space-x-4">
               <button 
@@ -49,7 +49,7 @@ const Profile = () => {
         {/* Carte latérale avec les actions rapides */}
         <div className="md:col-span-1 flex flex-col gap-4">
           {/* Carte de bienvenue */}
-          <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+          <div className="bg-white p-6 rounded-xl ring-1 ring-gray-900/5 shadow-sm">
             <div className="text-secondary mb-4">
               <BsPersonCircle className="w-12 h-12" />
             </div>
@@ -63,7 +63,7 @@ const Profile = () => {
           </div>
 
           {/* Carte des actions rapides */}
-          <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+          <div className="bg-white p-6 rounded-xl ring-1 ring-gray-900/5 shadow-sm">
             <h3 className="text-lg font-semibold mb-4">Actions rapides</h3>
             <div className="space-y-3">
               <button 
@@ -79,7 +79,7 @@ const Profile = () => {
           </div>
 
           {/* Carte de navigation */}
-          <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+          <div className="bg-white p-6 rounded-xl ring-1 ring-gray-900/5 shadow-sm">
             <h3 className="text-lg font-semibold mb-4">Navigation</h3>
             <div className="space-y-3">
               <Link 

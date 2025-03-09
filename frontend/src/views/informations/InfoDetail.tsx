@@ -1,9 +1,8 @@
 import { useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import useInfoStore from '../stores/useInfoStore';
-import useAuthStore from '../stores/useAuthStore';
+import useInfoStore from '../../stores/useInfoStore';
+import useAuthStore from '../../stores/useAuthStore';
 import { BsArrowLeft, BsPencil } from 'react-icons/bs';
-import axios from 'axios'
 
 const InfoDetail = () => {
   const { id } = useParams();
@@ -13,30 +12,32 @@ const InfoDetail = () => {
 
   useEffect(() => {
     if (id) {
-      console.log('Fetching info with ID:', id);
-      console.log('API URL:', `${axios.defaults.baseURL}/info/articles/${id}`);
       fetchInfoById(id);
     }
   }, [id, fetchInfoById]);
 
+  // Si chargement en cours
   if (loading) return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="text-center">Chargement...</div>
     </div>
   );
 
+  // Si une erreur est survenue
   if (error) return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="text-red-600">Erreur: {error}</div>
     </div>
   );
 
+  // Si l'information n'a pas été trouvée
   if (!currentInfo) return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="text-center">Information non trouvée</div>
     </div>
   );
 
+  // Information trouvée
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="mb-6 flex justify-between items-center">
@@ -59,12 +60,12 @@ const InfoDetail = () => {
         )}
       </div>
 
-      <article className="bg-white rounded-xl shadow-sm p-8">
+      <article className="bg-white rounded-xl ring-1 ring-gray-900/5 shadow-sm p-8">
         <header className="mb-8">
           <h1 className="text-3xl font-bold mb-4">{currentInfo.title}</h1>
           
           <div className="flex items-center gap-4 text-sm text-gray-600">
-            <span className="bg-primary/10 text-primary px-3 py-1 rounded-full">
+            <span className="bg-secondary/80 text-black px-3 py-1 rounded-full">
               {currentInfo.category.name}
             </span>
             <time>

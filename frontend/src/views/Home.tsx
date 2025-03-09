@@ -109,7 +109,7 @@ const Home = () => {
                 module.isAvailable 
                   ? 'bg-white hover:bg-gray-50' 
                   : 'bg-gray-100 cursor-not-allowed'
-              } p-6 sm:p-6 rounded-xl border border-gray-200 shadow-sm transition-all duration-300 group`}
+              } p-6 sm:p-6 rounded-xl ring-1 ring-gray-900/5 shadow-sm transition-all duration-300 group`}
             >
               <div className="h-full flex flex-col justify-between">
                 <div>

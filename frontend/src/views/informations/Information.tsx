@@ -42,7 +42,7 @@ const Information = () => {
         {isAdmin && (
           <Link 
             to="/admin"
-            className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark transition-colors flex items-center gap-2"
+            className="hidden lg:flex bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark transition-colors flex items-center gap-2"
           >
             <BsPlus className="w-5 h-5" />
             Gérer les informations

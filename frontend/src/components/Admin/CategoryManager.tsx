@@ -125,7 +125,7 @@ const CategoryManager = () => {
 
   return (
     <div className="space-y-8">
-      <div className="bg-white p-6 rounded-lg shadow-sm">
+      <div className="bg-white p-6 rounded-lg ring-1 ring-gray-900/5 shadow-sm">
         <h2 className="text-xl font-semibold mb-4">Ajouter une catégorie</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -160,7 +160,7 @@ const CategoryManager = () => {
         </form>
       </div>
 
-      <div className="bg-white p-6 rounded-lg shadow-sm">
+      <div className="bg-white p-6 rounded-lg ring-1 ring-gray-900/5 shadow-sm">
         <h2 className="text-xl font-semibold mb-4">Catégories existantes</h2>
         {loading && !editMode && <div className="text-center py-4">Chargement...</div>}
         {!loading && categories.length === 0 && (
