@@ -5,7 +5,7 @@ import SignIn from './components/Auth/SignIn';
 import SignUp from './components/Auth/SignUp';
 import Profile from './views/user/Profile';
 import ExerciseView from './views/Exercise';
-import Information from './views/Information';
+import Information from './views/informations/Information';
 import AdminDashboard from './views/admin/Backoffice';
 import PrivateRoute from './components/Auth/PrivateRoute';
 import InfoDetail from './views/InfoDetail';
