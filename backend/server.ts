@@ -10,8 +10,10 @@ import infoCategoryRoutes from './routes/infoCategoryRoutes';
 import userRoutes from './routes/userRoutes';
 import exerciseRoutes from './routes/exerciseRoutes';
 
+// Charger les variables d'environnement
 dotenv.config();
 
+// Création de l'application Express
 const app = express();
 const PORT = process.env.PORT || 5001;
 
@@ -36,6 +38,7 @@ app.use('/api/info', infoCategoryRoutes);
 app.use('/api', userRoutes);
 app.use('/api', exerciseRoutes);
 
+// Vérification du port sur lequel tourne l'application
 app.listen(PORT, () => {
   console.log(`Le serveur tourne sur le port ${PORT} 🔥`);
 });
