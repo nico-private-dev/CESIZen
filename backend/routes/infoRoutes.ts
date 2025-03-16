@@ -4,7 +4,7 @@ import { verifyToken, verifyRole } from '../middleware/authMiddleware';
 
 const router = express.Router();
 
-// Routes publiques
+// Routes pour tous les users
 router.get('/articles', getInfo);
 
 // Route pour un article spécifique

@@ -10,6 +10,8 @@ router.get('/mon-compte', verifyToken, getMe);
 router.post('/refresh', refresh);
 router.post('/logout', logout);
 router.put('/update-username', verifyToken, updateUsername);
+
+// Routes protégés pour les admin
 router.get('/admin', verifyToken, verifyRole(['admin']), (req, res) => {
   res.send('Admin Content');
 });
