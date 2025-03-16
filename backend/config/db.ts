@@ -5,6 +5,7 @@ const connectDB = async () => {
     // Désactiver strictQuery pour éviter les warnings futurs
     mongoose.set('strictQuery', false);
     
+    // connexion à la base de donnée
     const conn = await mongoose.connect(process.env.MONGO_URI!);
     console.log(`MongoDB est connecté sur : ${conn.connection.host} 😋`);
   } catch (error) {
