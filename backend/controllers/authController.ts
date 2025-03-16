@@ -6,6 +6,7 @@ import { generateAccessToken, generateRefreshToken } from '../utils/generateToke
 import jwt from 'jsonwebtoken';
 import { IAuthRequest } from '../types/auth';
 
+// Mise en place des cookies pour stocker les tokens utilisateurs
 const setTokenCookies = (res: Response, userId: string) => {
   const accessToken = generateAccessToken(userId);
   const refreshToken = generateRefreshToken(userId);
@@ -25,6 +26,7 @@ const setTokenCookies = (res: Response, userId: string) => {
   });
 };
 
+// Inscription 
 export const signUp = async (req: IAuthRequest, res: Response) => {
   const { username, firstname, lastname, email, password, roleName } = req.body;
 
@@ -60,6 +62,7 @@ export const signUp = async (req: IAuthRequest, res: Response) => {
   }
 };
 
+// Connexion
 export const signIn = async (req: IAuthRequest, res: Response) => {
   const { login, password } = req.body;
 
@@ -94,6 +97,7 @@ export const signIn = async (req: IAuthRequest, res: Response) => {
   }
 };
 
+// Vérification token lors du refresh de la page
 export const refresh = async (req: Request, res: Response) => {
   const refreshToken = req.cookies.refreshToken;
 
@@ -125,6 +129,7 @@ export const refresh = async (req: Request, res: Response) => {
   }
 };
 
+// Déconnexion
 export const logout = (req: Request, res: Response) => {
   res.cookie('accessToken', '', { 
     httpOnly: true,
@@ -143,6 +148,7 @@ export const logout = (req: Request, res: Response) => {
   res.status(200).json({ message: 'Logged out successfully' });
 };
 
+// Récupérer un utilisateur (ById)
 export const getMe = async (req: IAuthRequest, res: Response) => {
   try {
     const user = await UserModel.findById(req.user?._id).populate('role');
@@ -158,6 +164,7 @@ export const getMe = async (req: IAuthRequest, res: Response) => {
   }
 };
 
+// Mettre à jour le nom d'utilisateur
 export const updateUsername = async (req: IAuthRequest, res: Response) => {
   const { username } = req.body;
   

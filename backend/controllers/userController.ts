@@ -2,6 +2,7 @@ import { Response } from 'express';
 import { IAuthRequest } from '../types/auth';
 import User from '../models/userModel';
 
+// Récuperer tous les utilisateurs
 export const getAllUsers = async (req: IAuthRequest, res: Response) => {
   try {
     // Cherche les users dans la base de données, peuple le rôle et retire le mot de passe
@@ -15,6 +16,7 @@ export const getAllUsers = async (req: IAuthRequest, res: Response) => {
   }
 };
 
+// Supprimer un utilisateurs
 export const deleteUser = async (req: IAuthRequest, res: Response) => {
     try {
       const userIdToDelete = req.params.userId;

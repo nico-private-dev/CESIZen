@@ -2,6 +2,7 @@ import { Response } from 'express';
 import { IAuthRequest } from '../types/auth';
 import Exercise from '../models/exerciseModel';
 
+// Récuperer des exercices
 export const getExercises = async (req: IAuthRequest, res: Response) => {
     try {
       const exercises = await Exercise.find();
@@ -11,6 +12,7 @@ export const getExercises = async (req: IAuthRequest, res: Response) => {
     }
   };
 
+// Récuperer un exercice particulier (ById)
 export const getExerciseById = async (req: IAuthRequest, res: Response) => {
   try {
     const exercise = await Exercise.findById(req.params.id);
@@ -23,6 +25,7 @@ export const getExerciseById = async (req: IAuthRequest, res: Response) => {
   }
 };
 
+// Créer un exercice
 export const createExercise = async (req: IAuthRequest, res: Response) => {
   try {
     const { title, description, inspiration, apnee, expiration } = req.body;
@@ -52,6 +55,7 @@ export const createExercise = async (req: IAuthRequest, res: Response) => {
   }
 };
 
+// Mettre un jour un Exercice
 export const updateExercise = async (req: IAuthRequest, res: Response) => {
   try {
     const { title, description, inspiration, apnee, expiration } = req.body;
@@ -61,6 +65,7 @@ export const updateExercise = async (req: IAuthRequest, res: Response) => {
       return res.status(400).json({ message: 'Tous les champs sont requis' });
     }
 
+    // Mise à jour de l'exercice
     const updatedExercise = await Exercise.findByIdAndUpdate(
       req.params.id,
       {
@@ -83,9 +88,11 @@ export const updateExercise = async (req: IAuthRequest, res: Response) => {
   }
 };
 
+// Supprimer un exercice
 export const deleteExercise = async (req: IAuthRequest, res: Response) => {
   try {
 
+    // Suppression de l'exercice
     const deletedExercise = await Exercise.findByIdAndDelete(req.params.id);
     
     if (!deletedExercise) {

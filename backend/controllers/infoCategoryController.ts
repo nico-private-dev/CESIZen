@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import InfoCategory from '../models/infoCategoryModel';
 import Info from '../models/infoModel';
 
+// Récuperer des catégories
 export const getCategories = async (req: Request, res: Response) => {
   try {
     const categories = await InfoCategory.find().sort({ name: 1 });
@@ -11,6 +12,7 @@ export const getCategories = async (req: Request, res: Response) => {
   }
 };
 
+// Créer des catégories
 export const createCategory = async (req: Request, res: Response) => {
   try {
     const newCategory = new InfoCategory(req.body);
@@ -21,6 +23,7 @@ export const createCategory = async (req: Request, res: Response) => {
   }
 };
 
+// Mettre à jour des catégories
 export const updateCategory = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
@@ -45,6 +48,7 @@ export const updateCategory = async (req: Request, res: Response) => {
   }
 };
 
+// Supprimer des catégories
 export const deleteCategory = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;

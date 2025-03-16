@@ -1,8 +1,10 @@
 import { Request, Response } from 'express';
 import Info from '../models/infoModel';
 
+// Récuperer des articles
 export const getInfo = async (req: Request, res: Response) => {
   try {
+    // Récupération des articles avec leurs catégories
     const info = await Info.find()
       .populate('category')
       .sort({ createdAt: -1 });
@@ -12,8 +14,11 @@ export const getInfo = async (req: Request, res: Response) => {
   }
 };
 
+// Récuperer un article particulier (ById)
 export const getInfoById = async (req: Request, res: Response) => {
   try {
+    
+    // Récupération de l'article avec sa catégorie
     const info = await Info.findById(req.params.id).populate('category');
     if (!info) {
       return res.status(404).json({ message: 'Article non trouvé' });
@@ -24,6 +29,7 @@ export const getInfoById = async (req: Request, res: Response) => {
   }
 };
 
+// Créer un article
 export const createInfo = async (req: Request, res: Response) => {
   try {
     const newInfo = new Info(req.body);
@@ -35,9 +41,12 @@ export const createInfo = async (req: Request, res: Response) => {
   }
 };
 
+// Mettre à jour un article
 export const updateInfo = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
+
+    // Mise à jour de l'article
     const updatedInfo = await Info.findByIdAndUpdate(
       id,
       req.body,
@@ -54,9 +63,12 @@ export const updateInfo = async (req: Request, res: Response) => {
   }
 };
 
+// Supprimer un article
 export const deleteInfo = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
+
+    // Suppression de l'article
     const deletedInfo = await Info.findByIdAndDelete(id);
     
     if (!deletedInfo) {
