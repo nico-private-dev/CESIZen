@@ -9,6 +9,18 @@ const exerciseSchema = new mongoose.Schema({
   description: { 
     type: String, 
     required: true 
+  },
+  inspiration: { 
+    type: Number, 
+    required: true 
+  },
+  apnee: { 
+    type: Number, 
+    required: true 
+  },
+  expiration: { 
+    type: Number, 
+    required: true 
   }
 });
 
