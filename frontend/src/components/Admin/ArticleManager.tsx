@@ -138,7 +138,7 @@ const ArticleManager = () => {
 
   return (
     <div className="space-y-8">
-      <div className="bg-white p-6 rounded-lg ring-1 ring-gray-900/5 shadow-sm">
+      <div className="bg-white p-6 rounded-lg ring-1 ring-gray-900/5">
         <div className="flex justify-between items-center">
           <h2 className="text-xl font-semibold">
             {isEditing ? (selectedArticleId ? 'Modifier un article' : 'Ajouter un article') : 'Gestion des articles'}
@@ -231,7 +231,7 @@ const ArticleManager = () => {
       </div>
 
       {!isEditing && (
-        <div className="bg-white p-6 rounded-lg ring-1 ring-gray-900/5 shadow-sm">
+        <div className="bg-white p-6 rounded-lg ring-1 ring-gray-900/5">
           <h2 className="text-xl font-semibold mb-4">Articles publiés</h2>
           
           {loading && <div className="text-center py-4">Chargement...</div>}

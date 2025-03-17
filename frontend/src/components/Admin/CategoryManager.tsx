@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import type { ICategory } from '../../types/info';
-import { BsPencil, BsTrash, BsX, BsCheck } from 'react-icons/bs';
+import { BsPencil, BsTrash, BsX, BsPlus } from 'react-icons/bs';
 
 const CategoryManager = () => {
   const [categories, setCategories] = useState<ICategory[]>([]);
@@ -9,6 +9,7 @@ const CategoryManager = () => {
   const [description, setDescription] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const [editMode, setEditMode] = useState<string | null>(null);
   const [editName, setEditName] = useState('');
   const [editDescription, setEditDescription] = useState('');
@@ -20,7 +21,9 @@ const CategoryManager = () => {
   const fetchCategories = async () => {
     setLoading(true);
     try {
-      const response = await axios.get<ICategory[]>('http://localhost:5001/api/info/categories');
+      const response = await axios.get<ICategory[]>('http://localhost:5001/api/info/categories', {
+        withCredentials: true
+      });
       setCategories(response.data);
       setError(null);
     } catch (err: any) {
@@ -29,6 +32,13 @@ const CategoryManager = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const resetForm = () => {
+    setName('');
+    setDescription('');
+    setIsEditing(false);
+    setError(null);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -46,9 +56,7 @@ const CategoryManager = () => {
         }
       );
       setCategories([...categories, response.data]);
-      setName('');
-      setDescription('');
-      setError(null);
+      resetForm();
     } catch (err: any) {
       console.error('Erreur lors de l\'ajout de la catégorie:', err);
       setError(err.response?.data?.message || err.message || 'Erreur lors de l\'ajout de la catégorie');    
@@ -125,117 +133,152 @@ const CategoryManager = () => {
 
   return (
     <div className="space-y-8">
-      <div className="bg-white p-6 rounded-lg ring-1 ring-gray-900/5 shadow-sm">
-        <h2 className="text-xl font-semibold mb-4">Ajouter une catégorie</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Nom</label>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="mt-1 block w-full rounded-lg border border-grey-200 focus:border-secondary focus-visible:border-secondary sm:text-sm p-2"
-              required
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Description</label>
-            <textarea
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              className="mt-1 block w-full rounded-lg border border-grey-200 focus:border-secondary focus-visible:border-secondary sm:text-sm p-2"
-              rows={3}
-            />
-          </div>
-          {error && (
-            <div className="text-red-600 text-sm">{error}</div>
+      <div className="bg-white p-6 rounded-lg ring-1 ring-gray-900/5">
+        <div className="flex justify-between items-center">
+          <h2 className="text-xl font-semibold">
+            {isEditing ? 'Ajouter une catégorie' : 'Gestion des catégories'}
+          </h2>
+          {!isEditing ? (
+            <button
+              onClick={() => setIsEditing(true)}
+              className="bg-primary text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-primary-dark transition-colors"
+            >
+              <BsPlus className="w-5 h-5" />
+              Nouvelle catégorie
+            </button>
+          ) : (
+            <button
+              onClick={resetForm}
+              className="text-gray-600 hover:text-gray-800 transition-colors"
+            >
+              <BsX className="w-6 h-6" />
+            </button>
           )}
-          <button
-            type="submit"
-            className="w-full bg-primary text-white p-2 rounded-lg border-2 border-primary font-bold hover:bg-transparent hover:text-primary transition duration-300 ease"
-            disabled={loading}
-          >
-            {loading ? 'Chargement...' : 'Ajouter la catégorie'}
-          </button>
-        </form>
+        </div>
+
+        {isEditing && (
+          <form onSubmit={handleSubmit} className="space-y-4 mt-4">
+            <div>
+              <label htmlFor="name" className="block text-sm font-medium text-gray-700">Nom</label>
+              <input
+                id="name"
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="mt-1 block w-full rounded-lg border border-grey-200 focus:border-secondary focus-visible:border-secondary sm:text-sm p-2"
+                required
+              />
+            </div>
+            <div>
+              <label htmlFor="description" className="block text-sm font-medium text-gray-700">Description</label>
+              <textarea
+                id="description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                className="mt-1 block w-full rounded-lg border border-grey-200 focus:border-secondary focus-visible:border-secondary sm:text-sm p-2"
+                rows={3}
+              />
+            </div>
+            {error && (
+              <div className="text-red-600 text-sm">{error}</div>
+            )}
+            <div className="flex gap-3">
+              <button
+                type="submit"
+                disabled={loading}
+                className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark transition-colors disabled:opacity-50"
+              >
+                {loading ? 'Enregistrement...' : 'Publier'}
+              </button>
+              <button
+                type="button"
+                onClick={resetForm}
+                className="bg-secondary text-black border-2 border-secondary px-4 py-2 rounded-lg hover:bg-transparent hover:text-black transition-colors"
+              >
+                Annuler
+              </button>
+            </div>
+          </form>
+        )}
       </div>
 
-      <div className="bg-white p-6 rounded-lg ring-1 ring-gray-900/5 shadow-sm">
-        <h2 className="text-xl font-semibold mb-4">Catégories existantes</h2>
-        {loading && !editMode && <div className="text-center py-4">Chargement...</div>}
-        {!loading && categories.length === 0 && (
-          <div className="text-center py-4 text-gray-500">Aucune catégorie trouvée</div>
-        )}
-        <div className="divide-y divide-gray-200">
-          {categories.map((category) => (
-            <div key={category._id} className="py-4">
-              {editMode === category._id ? (
-                <div className="space-y-3">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">Nom</label>
-                    <input
-                      type="text"
-                      value={editName}
-                      onChange={(e) => setEditName(e.target.value)}
-                      className="mt-1 block w-full rounded-lg border border-grey-200 focus:border-secondary focus-visible:border-secondary sm:text-sm p-2"
-                      required
-                    />
+      {!isEditing && (
+        <div className="bg-white p-6 rounded-lg ring-1 ring-gray-900/5">
+          <h2 className="text-xl font-semibold mb-4">Catégories existantes</h2>
+          {loading && !editMode && <div className="text-center py-4">Chargement...</div>}
+          {!loading && categories.length === 0 && (
+            <div className="text-center py-4 text-gray-500">Aucune catégorie trouvée</div>
+          )}
+          <div className="divide-y divide-gray-200">
+            {categories.map((category) => (
+              <div key={category._id} className="py-4">
+                {editMode === category._id ? (
+                  <div className="space-y-3">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">Nom</label>
+                      <input
+                        type="text"
+                        value={editName}
+                        onChange={(e) => setEditName(e.target.value)}
+                        className="mt-1 block w-full rounded-lg border border-grey-200 focus:border-secondary focus-visible:border-secondary sm:text-sm p-2"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">Description</label>
+                      <textarea
+                        value={editDescription}
+                        onChange={(e) => setEditDescription(e.target.value)}
+                        className="mt-1 block w-full rounded-lg border border-grey-200 focus:border-secondary focus-visible:border-secondary sm:text-sm p-2"
+                        rows={2}
+                      />
+                    </div>
+                    <div className="flex gap-3 mt-2">
+                      <button
+                        onClick={() => handleUpdateCategory(category._id)}
+                        className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark transition-colors disabled:opacity-50"
+                        disabled={loading}
+                      >
+                        {loading ? 'Enregistrement...' : 'Mettre à jour'}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={handleCancelEdit}
+                        className="bg-secondary text-black border-2 border-secondary px-4 py-2 rounded-lg hover:bg-transparent hover:text-black transition-colors"
+                      >
+                        Annuler
+                      </button>
+                    </div>
                   </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">Description</label>
-                    <textarea
-                      value={editDescription}
-                      onChange={(e) => setEditDescription(e.target.value)}
-                      className="mt-1 block w-full rounded-lg border border-grey-200 focus:border-secondary focus-visible:border-secondary sm:text-sm p-2"
-                      rows={2}
-                    />
+                ) : (
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <h3 className="font-medium">{category.name}</h3>
+                      <p className="text-gray-600 text-sm">{category.description}</p>
+                    </div>
+                    <div className="flex space-x-2">
+                      <button
+                        onClick={() => handleEditClick(category)}
+                        className="text-primary hover:text-primary-dark transition-colors"
+                        title="Modifier"
+                      >
+                        <BsPencil className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={() => handleDeleteCategory(category._id)}
+                        className="text-red-600 hover:text-red-800 transition-colors"
+                        title="Supprimer"
+                      >
+                        <BsTrash className="w-4 h-4" />
+                      </button>
+                    </div>
                   </div>
-                  <div className="flex space-x-2 mt-2">
-                    <button
-                      onClick={() => handleUpdateCategory(category._id)}
-                      className="flex items-center gap-1 px-3 py-1 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
-                      disabled={loading}
-                    >
-                      <BsCheck className="w-4 h-4" />
-                      Enregistrer
-                    </button>
-                    <button
-                      onClick={handleCancelEdit}
-                      className="flex items-center gap-1 px-3 py-1 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-colors"
-                    >
-                      <BsX className="w-4 h-4" />
-                      Annuler
-                    </button>
-                  </div>
-                </div>
-              ) : (
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h3 className="font-medium">{category.name}</h3>
-                    <p className="text-gray-600 text-sm">{category.description}</p>
-                  </div>
-                  <div className="flex space-x-2">
-                    <button
-                      onClick={() => handleEditClick(category)}
-                      className="text-primary hover:text-primary-dark transition-colors"
-                      title="Modifier"
-                    >
-                      <BsPencil className="w-4 h-4" />
-                    </button>
-                    <button
-                      onClick={() => handleDeleteCategory(category._id)}
-                      className="text-red-600 hover:text-red-800 transition-colors"
-                      title="Supprimer"
-                    >
-                      <BsTrash className="w-4 h-4" />
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
-          ))}
+                )}
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
 import useExerciseStore from '../stores/useExerciceStore';
-import useAuthStore from '../stores/useAuthStore';
 import { IExercise } from '../types/exercise';
 
 // Phases de respiration
@@ -12,8 +11,7 @@ enum BreathingPhase {
 }
 
 const ExerciseView = () => {
-  const { user } = useAuthStore();
-  const { exercises, loading, error, fetchExercises, addExercise, updateExercise, deleteExercise } = useExerciseStore();
+  const { exercises, loading, error, fetchExercises } = useExerciseStore();
   
   const [selectedExercise, setSelectedExercise] = useState<IExercise | null>(null);
   const [isExerciseActive, setIsExerciseActive] = useState(false);
@@ -21,16 +19,6 @@ const ExerciseView = () => {
   const [secondsLeft, setSecondsLeft] = useState(0);
   const [totalCycles, setTotalCycles] = useState(5);
   const [currentCycle, setCurrentCycle] = useState(0);
-  
-  // État pour le formulaire d'édition
-  const [isEditing, setIsEditing] = useState(false);
-  const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    inspiration: 0,
-    apnee: 0,
-    expiration: 0
-  });
   
   const animationRef = useRef<number | null>(null);
   const circleRef = useRef<HTMLDivElement>(null);
@@ -156,368 +144,120 @@ const ExerciseView = () => {
     };
   }, [isExerciseActive, currentPhase, selectedExercise]);
 
-  // Gérer le changement des champs du formulaire
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: name === 'title' || name === 'description' ? value : Number(value)
-    });
-  };
-
-  // Ouvrir le formulaire pour un nouvel exercice
-  const handleNewClick = () => {
-    setSelectedExercise(null);
-    setFormData({
-      title: '',
-      description: '',
-      inspiration: 4,
-      apnee: 4,
-      expiration: 4
-    });
-    setIsEditing(true);
-  };
-
-  // Ouvrir le formulaire pour éditer un exercice
-  const handleEditClick = (exercise: IExercise) => {
-    setSelectedExercise(exercise);
-    setFormData({
-      title: exercise.title,
-      description: exercise.description,
-      inspiration: exercise.inspiration,
-      apnee: exercise.apnee,
-      expiration: exercise.expiration
-    });
-    setIsEditing(true);
-  };
-
-  // Soumettre le formulaire
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    try {
-      if (selectedExercise && selectedExercise._id) {
-        // Mise à jour
-        await updateExercise(selectedExercise._id, formData);
-      } else {
-        // Création
-        await addExercise(formData as Omit<IExercise, '_id'>);
-      }
-      setIsEditing(false);
-      fetchExercises();
-    } catch (err) {
-      console.error('Erreur lors de la sauvegarde:', err);
-    }
-  };
-
-  // Supprimer un exercice
-  const handleDelete = async (id: string) => {
-    if (window.confirm('Êtes-vous sûr de vouloir supprimer cet exercice?')) {
-      try {
-        await deleteExercise(id);
-        if (selectedExercise && selectedExercise._id === id) {
-          setSelectedExercise(null);
-        }
-      } catch (err) {
-        console.error('Erreur lors de la suppression:', err);
-      }
-    }
+  // Gérer le changement du nombre de cycles
+  const handleCyclesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTotalCycles(Number(e.target.value));
   };
 
   return (
-    <div className="py-8">
-      <h1 className="text-3xl font-bold text-center mb-8 text-primary">Exercices de Respiration</h1>
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-8 text-center">Exercices de respiration</h1>
       
-      {loading ? (
-        <div className="flex justify-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+      {error && (
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+          {error}
         </div>
-      ) : error ? (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6">
-          <span className="block sm:inline">Erreur: {error}</span>
-        </div>
-      ) : (
-        <>
-          {isEditing ? (
-            <div className="bg-white rounded-lg shadow-lg p-6 max-w-2xl mx-auto">
-              <h2 className="text-2xl font-semibold mb-4 text-primary">
-                {selectedExercise ? 'Modifier l\'exercice' : 'Nouvel exercice'}
-              </h2>
-              
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                  <label htmlFor="title" className="block text-gray-700 font-medium mb-2">Titre</label>
-                  <input
-                    id="title"
-                    type="text"
-                    name="title"
-                    value={formData.title}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-                    required
-                  />
-                </div>
-                
-                <div>
-                  <label htmlFor="description" className="block text-gray-700 font-medium mb-2">Description</label>
-                  <textarea
-                    id="description"
-                    name="description"
-                    value={formData.description}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary min-h-[100px]"
-                    required
-                  />
-                </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div>
-                    <label htmlFor="inspiration" className="block text-gray-700 font-medium mb-2">Inspiration (secondes)</label>
-                    <input
-                      id="inspiration"
-                      type="number"
-                      name="inspiration"
-                      min="1"
-                      max="20"
-                      value={formData.inspiration}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-                      required
-                    />
-                  </div>
-                  
-                  <div>
-                    <label htmlFor="apnee" className="block text-gray-700 font-medium mb-2">Apnée (secondes)</label>
-                    <input
-                      id="apnee"
-                      type="number"
-                      name="apnee"
-                      min="0"
-                      max="20"
-                      value={formData.apnee}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-                      required
-                    />
-                  </div>
-                  
-                  <div>
-                    <label htmlFor="expiration" className="block text-gray-700 font-medium mb-2">Expiration (secondes)</label>
-                    <input
-                      id="expiration"
-                      type="number"
-                      name="expiration"
-                      min="1"
-                      max="20"
-                      value={formData.expiration}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-                      required
-                    />
-                  </div>
-                </div>
-                
-                <div className="flex justify-end space-x-4 pt-4">
-                  <button
-                    type="button"
-                    onClick={() => setIsEditing(false)}
-                    className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
-                  >
-                    Annuler
-                  </button>
-                  <button
-                    type="submit"
-                    className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/80 transition-colors"
-                  >
-                    Enregistrer
-                  </button>
-                </div>
-              </form>
-            </div>
+      )}
+      
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {/* Liste des exercices */}
+        <div className="md:col-span-1 bg-white p-6 rounded-lg shadow">
+          <h2 className="text-xl font-semibold mb-4">Choisir un exercice</h2>
+          
+          {loading ? (
+            <p className="text-center py-4">Chargement...</p>
+          ) : exercises.length === 0 ? (
+            <p className="text-center py-4">Aucun exercice disponible</p>
           ) : (
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {/* Liste des exercices */}
-              <div className="lg:col-span-1">
-                <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-                  <div className="bg-primary text-white p-4 flex justify-between items-center">
-                    <h2 className="text-xl font-semibold">Exercices disponibles</h2>
-                    {user && user.role?.name === 'admin' && (
-                      <button 
-                        onClick={handleNewClick}
-                        className="bg-white text-primary px-3 py-1 rounded-full hover:bg-gray-100 transition-colors"
-                      >
-                        + Nouveau
-                      </button>
-                    )}
-                  </div>
-                  
-                  <div className="divide-y divide-gray-200 max-h-[500px] overflow-y-auto">
-                    {exercises.length === 0 ? (
-                      <div className="p-4 text-center text-gray-500">
-                        Aucun exercice disponible
-                      </div>
-                    ) : (
-                      exercises.map((exercise) => (
-                        <div 
-                          key={exercise._id} 
-                          className={`p-4 cursor-pointer transition-colors ${selectedExercise?._id === exercise._id ? 'bg-primary/10 border-l-4 border-primary' : 'hover:bg-gray-50 border-l-4 border-transparent'}`}
-                          onClick={() => handleSelectExercise(exercise)}
-                        >
-                          <div className="flex justify-between items-center">
-                            <div>
-                              <h3 className="font-medium text-gray-900">{exercise.title}</h3>
-                              <p className="text-sm text-gray-600 mt-1">
-                                Inspiration: {exercise.inspiration}s • 
-                                {exercise.apnee > 0 ? ` Apnée: ${exercise.apnee}s • ` : ' '}
-                                Expiration: {exercise.expiration}s
-                              </p>
-                            </div>
-                            {user && user.role?.name === 'admin' && (
-                              <div className="flex space-x-2 ml-4">
-                                <button 
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    handleEditClick(exercise);
-                                  }}
-                                  className="text-primary hover:text-primary/80 transition-colors"
-                                  aria-label="Éditer"
-                                >
-                                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                  </svg>
-                                </button>
-                                <button 
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    handleDelete(exercise._id);
-                                  }}
-                                  className="text-red-600 hover:text-red-800 transition-colors"
-                                  aria-label="Supprimer"
-                                >
-                                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                  </svg>
-                                </button>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      ))
-                    )}
-                  </div>
+            <div className="space-y-3">
+              {exercises.map((exercise) => (
+                <div 
+                  key={exercise._id}
+                  onClick={() => handleSelectExercise(exercise)}
+                  className={`p-3 rounded-md cursor-pointer transition ${
+                    selectedExercise?._id === exercise._id 
+                      ? 'bg-primary text-white' 
+                      : 'bg-gray-100 hover:bg-gray-200'
+                  }`}
+                >
+                  <h3 className="font-medium">{exercise.title}</h3>
+                  <p className={`text-sm mt-1 ${selectedExercise?._id === exercise._id ? 'text-white/80' : 'text-gray-600'}`}>
+                    {exercise.inspiration}s - {exercise.apnee}s - {exercise.expiration}s
+                  </p>
                 </div>
-              </div>
-              
-              {/* Détails et animation de l'exercice */}
-              <div className="lg:col-span-2">
-                {selectedExercise ? (
-                  <div className="bg-white rounded-lg shadow-lg p-6">
-                    <h2 className="text-2xl font-semibold mb-2 text-primary">{selectedExercise.title}</h2>
-                    <p className="text-gray-700 mb-6">{selectedExercise.description}</p>
-                    
-                    <div className="mb-6 grid grid-cols-3 gap-4 text-center">
-                      <div className="bg-primary/10 p-3 rounded-lg">
-                        <span className="block text-sm text-gray-500">Inspiration</span>
-                        <span className="block text-xl font-semibold text-primary">{selectedExercise.inspiration}s</span>
-                      </div>
-                      <div className="bg-primary/10 p-3 rounded-lg">
-                        <span className="block text-sm text-gray-500">Apnée</span>
-                        <span className="block text-xl font-semibold text-primary">{selectedExercise.apnee}s</span>
-                      </div>
-                      <div className="bg-primary/10 p-3 rounded-lg">
-                        <span className="block text-sm text-gray-500">Expiration</span>
-                        <span className="block text-xl font-semibold text-primary">{selectedExercise.expiration}s</span>
-                      </div>
-                    </div>
-                    
-                    <div className="mb-6">
-                      <label className="flex items-center justify-between mb-2">
-                        <span className="text-gray-700 font-medium">Nombre de cycles:</span>
-                        <div className="flex items-center">
-                          <button 
-                            onClick={() => setTotalCycles(prev => Math.max(1, prev - 1))}
-                            disabled={isExerciseActive}
-                            className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center disabled:opacity-50"
-                          >
-                            -
-                          </button>
-                          <span className="mx-3 w-8 text-center">{totalCycles}</span>
-                          <button 
-                            onClick={() => setTotalCycles(prev => Math.min(20, prev + 1))}
-                            disabled={isExerciseActive}
-                            className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center disabled:opacity-50"
-                          >
-                            +
-                          </button>
-                        </div>
-                      </label>
-                    </div>
-                    
-                    <div className="flex justify-center mb-8">
-                      {!isExerciseActive ? (
-                        <button 
-                          onClick={startExercise}
-                          className="px-6 py-3 bg-primary text-white rounded-full hover:bg-primary/80 transition-colors flex items-center"
-                        >
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
-                          </svg>
-                          Commencer l'exercice
-                        </button>
-                      ) : (
-                        <button 
-                          onClick={stopExercise}
-                          className="px-6 py-3 bg-red-600 text-white rounded-full hover:bg-red-700 transition-colors flex items-center"
-                        >
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8 7a1 1 0 00-1 1v4a1 1 0 001 1h4a1 1 0 001-1V8a1 1 0 00-1-1H8z" clipRule="evenodd" />
-                          </svg>
-                          Arrêter l'exercice
-                        </button>
-                      )}
-                    </div>
-                    
-                    {isExerciseActive && (
-                      <div className="text-center">
-                        <div className="flex flex-col items-center justify-center mb-6">
-                          <div 
-                            ref={circleRef} 
-                            className={`w-48 h-48 rounded-full flex items-center justify-center transition-all duration-300 ease-in-out ${
-                              currentPhase === BreathingPhase.INSPIRATION 
-                                ? 'bg-primary/20 text-primary' 
-                                : currentPhase === BreathingPhase.APNEE 
-                                  ? 'bg-primary/30 text-primary' 
-                                  : 'bg-primary/20 text-primary'
-                            }`}
-                          >
-                            <div className="text-center">
-                              <h3 className="text-2xl font-bold">{currentPhase}</h3>
-                              <p className="text-xl">{secondsLeft}s</p>
-                            </div>
-                          </div>
-                        </div>
-                        <p className="text-gray-700">
-                          Cycle <span className="font-semibold">{currentCycle}</span> sur <span className="font-semibold">{totalCycles}</span>
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  <div className="bg-white rounded-lg shadow-lg p-8 flex flex-col items-center justify-center h-full min-h-[400px]">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 text-primary/30 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15.536a5 5 0 001.414 1.414m2.828-9.9a9 9 0 012.828-2.828" />
-                    </svg>
-                    <h3 className="text-xl font-medium text-gray-700 mb-2">Sélectionnez un exercice</h3>
-                    <p className="text-gray-500 text-center">
-                      Choisissez un exercice de respiration dans la liste pour commencer
-                    </p>
-                  </div>
-                )}
-              </div>
+              ))}
             </div>
           )}
-        </>
-      )}
+        </div>
+        
+        {/* Exercice actif */}
+        <div className="md:col-span-2 bg-white p-6 rounded-lg shadow flex flex-col">
+          {selectedExercise ? (
+            <>
+              <div className="mb-6">
+                <h2 className="text-2xl font-semibold">{selectedExercise.title}</h2>
+                <p className="text-gray-600 mt-2">{selectedExercise.description}</p>
+              </div>
+              
+              <div className="flex-1 flex flex-col items-center justify-center">
+                <div 
+                  ref={circleRef}
+                  className="w-48 h-48 rounded-full bg-primary/20 flex items-center justify-center mb-8 transition-transform"
+                >
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-primary">{currentPhase}</div>
+                    {isExerciseActive && (
+                      <>
+                        <div className="text-4xl font-bold mt-2">{secondsLeft}</div>
+                        <div className="text-sm text-gray-600 mt-1">
+                          Cycle {currentCycle}/{totalCycles}
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </div>
+                
+                <div className="flex space-x-4">
+                  {!isExerciseActive ? (
+                    <button
+                      onClick={startExercise}
+                      className="px-6 py-2 bg-primary text-white rounded-md hover:bg-primary-dark transition"
+                    >
+                      Commencer
+                    </button>
+                  ) : (
+                    <button
+                      onClick={stopExercise}
+                      className="px-6 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
+                    >
+                      Arrêter
+                    </button>
+                  )}
+                </div>
+              </div>
+              
+              <div className="mt-6">
+                <label htmlFor="cycles" className="block text-sm font-medium text-gray-700 mb-1">
+                  Nombre de cycles
+                </label>
+                <input
+                  type="number"
+                  id="cycles"
+                  min="1"
+                  max="10"
+                  value={totalCycles}
+                  onChange={handleCyclesChange}
+                  className="w-64"
+                />
+              </div>
+            </>
+          ) : (
+            <div className="flex-1 flex items-center justify-center text-gray-500">
+              Sélectionnez un exercice pour commencer
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 };

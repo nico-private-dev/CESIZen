@@ -3,10 +3,11 @@ import useAuthStore from '../../stores/useAuthStore';
 import CategoryManager from '../../components/Admin/CategoryManager';
 import ArticleManager from '../../components/Admin/ArticleManager';
 import UsersManager from '../../components/Admin/UsersManager';
+import ExerciseManager from '../../components/Admin/ExerciseManager';
 
 const AdminDashboard = () => {
   const { user } = useAuthStore();
-  const [activeTab, setActiveTab] = useState<'categories' | 'articles' | 'users'>('categories');
+  const [activeTab, setActiveTab] = useState<'categories' | 'articles' | 'users' | 'exercises'>('categories');
 
   if (!user || (typeof user.role === 'object' ? user.role.name !== 'admin' : user.role !== 'admin')) {
     return <div className="text-center py-8">Accès non autorisé</div>;
@@ -49,12 +50,25 @@ const AdminDashboard = () => {
           >
             Gestion des utilisateurs
           </button>
+          <button
+            onClick={() => setActiveTab('exercises')}
+            className={`${
+              activeTab === 'exercises'
+                ? 'border-primary bg-primary text-white rounded-lg'
+                : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 rounded-lg'
+            } border p-2 font-medium text-sm mb-6`}
+          >
+            Exercices de respiration
+          </button>
         </nav>
       </div>
 
       {/* Content */}
       <div className="mt-6">
-        {activeTab === 'categories' ? <CategoryManager /> : activeTab === 'articles' ? <ArticleManager /> : <UsersManager />}
+        {activeTab === 'categories' ? <CategoryManager /> : 
+         activeTab === 'articles' ? <ArticleManager /> : 
+         activeTab === 'exercises' ? <ExerciseManager /> : 
+         <UsersManager />}
       </div>
     </div>
   );
