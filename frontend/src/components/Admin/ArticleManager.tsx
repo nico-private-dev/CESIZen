@@ -250,13 +250,13 @@ const ArticleManager = () => {
                   <div className="flex gap-2">
                     <button
                       onClick={() => handleEdit(article)}
-                      className="p-1 text-primary hover:bg-gray-100 rounded"
+                      className="p-1 text-primary hover:bg-gray-100 rounded-lg"
                     >
                       <BsPencil className="w-4 h-4" />
                     </button>
                     <button
                       onClick={() => handleDelete(article._id)}
-                      className="p-1 text-red-600 hover:bg-gray-100 rounded"
+                      className="p-1 text-red-600 hover:bg-gray-100 rounded-lg"
                     >
                       <BsTrash className="w-4 h-4" />
                     </button>
@@ -268,7 +268,7 @@ const ArticleManager = () => {
                     : article.content}
                 </p>
                 <div className="flex justify-between items-center text-sm text-gray-500">
-                  <span className="bg-secondary/80 text-black px-2 py-1 rounded-full text-xs">
+                  <span className="bg-secondary/80 text-black px-2 py-1 rounded-lg text-xs">
                     {article.category.name}
                   </span>
                   <span>{new Date(article.createdAt).toLocaleDateString('fr-FR', {

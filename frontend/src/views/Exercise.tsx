@@ -12,14 +12,14 @@ enum BreathingPhase {
 
 const ExerciseView = () => {
   const { exercises, loading, error, fetchExercises } = useExerciseStore();
-  
+
   const [selectedExercise, setSelectedExercise] = useState<IExercise | null>(null);
   const [isExerciseActive, setIsExerciseActive] = useState(false);
   const [currentPhase, setCurrentPhase] = useState<BreathingPhase>(BreathingPhase.IDLE);
   const [secondsLeft, setSecondsLeft] = useState(0);
   const [totalCycles, setTotalCycles] = useState(5);
   const [currentCycle, setCurrentCycle] = useState(0);
-  
+
   const animationRef = useRef<number | null>(null);
   const circleRef = useRef<HTMLDivElement>(null);
 
@@ -39,7 +39,7 @@ const ExerciseView = () => {
   // Démarrer l'exercice
   const startExercise = () => {
     if (!selectedExercise) return;
-    
+
     setIsExerciseActive(true);
     setCurrentPhase(BreathingPhase.INSPIRATION);
     setSecondsLeft(selectedExercise.inspiration);
@@ -101,7 +101,7 @@ const ExerciseView = () => {
     let scale = 1;
     let startTime: number | null = null;
     let duration: number;
-    
+
     if (currentPhase === BreathingPhase.INSPIRATION) {
       duration = selectedExercise!.inspiration * 1000;
     } else if (currentPhase === BreathingPhase.APNEE) {
@@ -113,10 +113,10 @@ const ExerciseView = () => {
     const animate = (timestamp: number) => {
       if (!circleRef.current) return;
       if (!startTime) startTime = timestamp;
-      
+
       const elapsed = timestamp - startTime;
       const progress = Math.min(elapsed / duration, 1);
-      
+
       if (currentPhase === BreathingPhase.INSPIRATION) {
         // Animation fluide d'inspiration (de 1 à 1.3)
         scale = 1 + (0.3 * progress);
@@ -129,7 +129,7 @@ const ExerciseView = () => {
       }
 
       circleRef.current.style.transform = `scale(${scale})`;
-      
+
       if (elapsed < duration) {
         animationRef.current = requestAnimationFrame(animate);
       }
@@ -152,18 +152,18 @@ const ExerciseView = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-8 text-center">Exercices de respiration</h1>
-      
+
       {error && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-4">
           {error}
         </div>
       )}
-      
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {/* Liste des exercices */}
-        <div className="md:col-span-1 bg-white p-6 rounded-lg shadow">
+        <div className="md:col-span-1 bg-white p-6 rounded-lg ring-1 ring-gray-900/5">
           <h2 className="text-xl font-semibold mb-4">Choisir un exercice</h2>
-          
+
           {loading ? (
             <p className="text-center py-4">Chargement...</p>
           ) : exercises.length === 0 ? (
@@ -171,14 +171,13 @@ const ExerciseView = () => {
           ) : (
             <div className="space-y-3">
               {exercises.map((exercise) => (
-                <div 
+                <div
                   key={exercise._id}
                   onClick={() => handleSelectExercise(exercise)}
-                  className={`p-3 rounded-md cursor-pointer transition ${
-                    selectedExercise?._id === exercise._id 
-                      ? 'bg-primary text-white' 
+                  className={`p-3 rounded-lg cursor-pointer transition ${selectedExercise?._id === exercise._id
+                      ? 'bg-primary text-white'
                       : 'bg-gray-100 hover:bg-gray-200'
-                  }`}
+                    }`}
                 >
                   <h3 className="font-medium">{exercise.title}</h3>
                   <p className={`text-sm mt-1 ${selectedExercise?._id === exercise._id ? 'text-white/80' : 'text-gray-600'}`}>
@@ -189,18 +188,49 @@ const ExerciseView = () => {
             </div>
           )}
         </div>
-        
+
         {/* Exercice actif */}
-        <div className="md:col-span-2 bg-white p-6 rounded-lg shadow flex flex-col">
+        <div className="md:col-span-2 bg-white p-6 rounded-lg ring-1 ring-gray-900/5 flex flex-col">
           {selectedExercise ? (
             <>
-              <div className="mb-6">
-                <h2 className="text-2xl font-semibold">{selectedExercise.title}</h2>
-                <p className="text-gray-600 mt-2">{selectedExercise.description}</p>
+              <div className='grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-4'>
+                <div className="mb-6 pr-16">
+                  <h2 className="text-2xl font-semibold">{selectedExercise.title}</h2>
+                  <p className="text-gray-600 mt-2">{selectedExercise.description}</p>
+                </div>
+                <div>
+                  <label htmlFor="cycles" className="block text-sm font-medium text-gray-700 mb-1">
+                    Nombre de cycles
+                  </label>
+                  <div className="flex items-center space-x-2">
+                    <button
+                      onClick={() => setTotalCycles(prev => Math.max(1, prev - 1))}
+                      className="w-[25%] h-10 flex items-center justify-center bg-primary text-white rounded-lg hover:bg-primary-dark transition"
+                      aria-label="Diminuer"
+                    >
+                      -
+                    </button>
+                    <input
+                      type="number"
+                      id="cycles"
+                      min="1"
+                      max="10"
+                      value={totalCycles}
+                      onChange={handleCyclesChange}
+                      className="w-[50%] h-10 text-center rounded-lg ring-1 ring-gray-900/5 focus:outline-none focus:ring-2 focus:ring-primary [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                    />
+                    <button
+                      onClick={() => setTotalCycles(prev => Math.min(10, prev + 1))}
+                      className="w-[25%] h-10 flex items-center justify-center bg-primary text-white rounded-lg hover:bg-primary-dark transition"
+                      aria-label="Augmenter"
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
               </div>
-              
-              <div className="flex-1 flex flex-col items-center justify-center">
-                <div 
+              <div className="mt-6 flex-1 flex flex-col items-center justify-center">
+                <div
                   ref={circleRef}
                   className="w-48 h-48 rounded-full bg-primary/20 flex items-center justify-center mb-8 transition-transform"
                 >
@@ -216,39 +246,24 @@ const ExerciseView = () => {
                     )}
                   </div>
                 </div>
-                
+
                 <div className="flex space-x-4">
                   {!isExerciseActive ? (
                     <button
                       onClick={startExercise}
-                      className="px-6 py-2 bg-primary text-white rounded-md hover:bg-primary-dark transition"
+                      className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition"
                     >
                       Commencer
                     </button>
                   ) : (
                     <button
                       onClick={stopExercise}
-                      className="px-6 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
+                      className="px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
                     >
                       Arrêter
                     </button>
                   )}
                 </div>
-              </div>
-              
-              <div className="mt-6">
-                <label htmlFor="cycles" className="block text-sm font-medium text-gray-700 mb-1">
-                  Nombre de cycles
-                </label>
-                <input
-                  type="number"
-                  id="cycles"
-                  min="1"
-                  max="10"
-                  value={totalCycles}
-                  onChange={handleCyclesChange}
-                  className="w-64"
-                />
               </div>
             </>
           ) : (

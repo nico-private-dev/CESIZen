@@ -56,7 +56,7 @@ function UsersManager() {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        <div className="animate-spin rounded-lg h-8 w-8 border-b-2 border-primary"></div>
       </div>
     );
   }
@@ -137,11 +137,11 @@ function UsersManager() {
 
       {totalPages > 1 && (
         <div className="flex justify-end mt-4">
-          <nav className="inline-flex rounded-md shadow">
+          <nav className="inline-flex rounded-lg shadow">
             <button
               onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
               disabled={currentPage === 1}
-              className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
+              className="relative inline-flex items-center px-2 py-2 rounded-l-lg border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
             >
               <span className="sr-only">Page précédente</span>
               <svg
@@ -175,7 +175,7 @@ function UsersManager() {
             <button
               onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
               disabled={currentPage === totalPages}
-              className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
+              className="relative inline-flex items-center px-2 py-2 rounded-r-lg border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
             >
               <span className="sr-only">Page suivante</span>
               <svg

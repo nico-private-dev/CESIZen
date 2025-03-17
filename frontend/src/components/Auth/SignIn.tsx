@@ -42,7 +42,7 @@ const SignIn = () => {
                 type="text"
                 value={login}
                 onChange={(e) => setLogin(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded mt-1"
+                className="w-full p-2 border border-gray-300 rounded-lg mt-1"
               />
             </div>
             <div className="mb-4">
@@ -51,10 +51,10 @@ const SignIn = () => {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded mt-1"
+                className="w-full p-2 border border-gray-300 rounded-lg mt-1"
               />
             </div>
-            <button type="submit" className="w-full bg-primary text-white p-2 rounded border-2 border-primary font-bold hover:bg-transparent hover:border-primary hover:text-primary transition duration-300 ease">Se connecter</button>
+            <button type="submit" className="w-full bg-primary text-white p-2 rounded-lg border-2 border-primary font-bold hover:bg-transparent hover:border-primary hover:text-primary transition duration-300 ease">Se connecter</button>
             {error && <p className="text-red-500 mt-4">{error}</p>}
           </form>
         </div>

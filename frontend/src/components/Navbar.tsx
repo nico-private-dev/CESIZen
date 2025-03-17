@@ -99,7 +99,7 @@ const Navbar = () => {
           <button
             type="button"
             onClick={() => setMobileMenuOpen(true)}
-            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
+            className="-m-2.5 inline-flex items-center justify-center rounded-lg p-2.5 text-gray-700"
           >
             <span className="sr-only">Ouvrir le menu</span>
             <Bars3Icon aria-hidden="true" className="h-6 w-6" />
@@ -119,7 +119,7 @@ const Navbar = () => {
 
             <PopoverPanel
               transition
-              className="absolute top-full left-0 -translate-x-[40%] z-10 mt-3 w-screen max-w-md overflow-hidden rounded-3xl bg-white ring-1 shadow-lg ring-gray-900/5 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in"
+              className="absolute top-full left-0 -translate-x-[40%] z-10 mt-3 w-screen max-w-md overflow-hidden rounded-lg bg-white ring-1 shadow-lg ring-gray-900/5 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in"
             >
               <div className="p-4">
                 {tools.map((item) => (
@@ -195,7 +195,7 @@ const Navbar = () => {
             <button
               type="button"
               onClick={() => setMobileMenuOpen(false)}
-              className="-m-2.5 rounded-md p-2.5 text-gray-700"
+              className="-m-2.5 rounded-lg p-2.5 text-gray-700"
             >
               <span className="sr-only">Fermer le menu</span>
               <XMarkIcon aria-hidden="true" className="h-6 w-6" />

@@ -54,7 +54,7 @@ const ProfileInfo = ({ user, activeSection = 'info' }: ProfileInfoProps) => {
         <div className="space-y-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {/* Carte d'informations personnelles */}
-            <div className="bg-gray-50 p-5 rounded-xl">
+            <div className="bg-gray-50 p-5 rounded-lg">
               <h3 className="text-lg font-semibold mb-4">Informations personnelles</h3>
               <div className="space-y-4">
                 <div>
@@ -69,7 +69,7 @@ const ProfileInfo = ({ user, activeSection = 'info' }: ProfileInfoProps) => {
             </div>
 
             {/* Carte d'informations de contact */}
-            <div className="bg-gray-50 p-5 rounded-xl">
+            <div className="bg-gray-50 p-5 rounded-lg">
               <h3 className="text-lg font-semibold mb-4">Informations de contact</h3>
               <div className="space-y-4">
                 <div>
@@ -81,7 +81,7 @@ const ProfileInfo = ({ user, activeSection = 'info' }: ProfileInfoProps) => {
           </div>
 
           {/* Carte du nom d'utilisateur */}
-          <div className="bg-gray-50 p-5 rounded-xl">
+          <div className="bg-gray-50 p-5 rounded-lg">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-semibold">Nom d'utilisateur</h3>
               {!isEditingUsername && (
@@ -102,7 +102,7 @@ const ProfileInfo = ({ user, activeSection = 'info' }: ProfileInfoProps) => {
                     type="text"
                     value={newUsername}
                     onChange={(e) => setNewUsername(e.target.value)}
-                    className="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm"
+                    className="block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm"
                     required
                   />
                 </div>
@@ -124,14 +124,14 @@ const ProfileInfo = ({ user, activeSection = 'info' }: ProfileInfoProps) => {
                 <div className="flex space-x-3">
                   <button
                     type="submit"
-                    className="bg-primary text-white px-4 py-2 rounded text-sm hover:bg-primary-dark transition-colors"
+                    className="bg-primary text-white px-4 py-2 rounded-lg text-sm hover:bg-primary-dark transition-colors"
                   >
                     Enregistrer
                   </button>
                   <button
                     type="button"
                     onClick={cancelUsernameEdit}
-                    className="bg-gray-200 text-gray-800 px-4 py-2 rounded text-sm hover:bg-gray-300 transition-colors"
+                    className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg text-sm hover:bg-gray-300 transition-colors"
                   >
                     Annuler
                   </button>

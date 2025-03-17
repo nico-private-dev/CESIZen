@@ -54,7 +54,7 @@ const SignUp = () => {
                   type="text"
                   value={firstname}
                   onChange={(e) => setFirstname(e.target.value)}
-                  className="w-full p-2 border border-gray-300 rounded mt-1"
+                  className="w-full p-2 border border-gray-300 rounded-lg mt-1"
                 />
               </div>
               <div className="mb-4">
@@ -63,7 +63,7 @@ const SignUp = () => {
                   type="text"
                   value={lastname}
                   onChange={(e) => setLastname(e.target.value)}
-                  className="w-full p-2 border border-gray-300 rounded mt-1"
+                  className="w-full p-2 border border-gray-300 rounded-lg mt-1"
                 />
               </div>
             </div>
@@ -73,7 +73,7 @@ const SignUp = () => {
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded mt-1"
+                className="w-full p-2 border border-gray-300 rounded-lg mt-1"
                 required
               />
             </div>
@@ -83,7 +83,7 @@ const SignUp = () => {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded mt-1"
+                className="w-full p-2 border border-gray-300 rounded-lg mt-1"
               />
             </div>
             <div className="mb-4">
@@ -92,7 +92,7 @@ const SignUp = () => {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded mt-1"
+                className="w-full p-2 border border-gray-300 rounded-lg mt-1"
               />
             </div>
             <div className="mb-4">
@@ -101,7 +101,7 @@ const SignUp = () => {
               type="password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className={`w-full p-2 border rounded mt-1 ${
+              className={`w-full p-2 border rounded-lg mt-1 ${
                 passwordError ? 'border-red-500' : 'border-gray-300'
               }`}
               required
@@ -111,7 +111,7 @@ const SignUp = () => {
               <p className="text-red-500 text-sm mt-1">{passwordError}</p>
             )}
           </div>
-            <button type="submit" className="w-full bg-primary text-white p-2 rounded border-2 border-primary font-bold hover:bg-transparent hover:border-primary hover:text-primary transition duration-300 ease">S'inscrire</button>
+            <button type="submit" className="w-full bg-primary text-white p-2 rounded-lg border-2 border-primary font-bold hover:bg-transparent hover:border-primary hover:text-primary transition duration-300 ease">S'inscrire</button>
             {error && <p className="text-red-500 mt-4">{error}</p>}
           </form>
         </div>

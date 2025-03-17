@@ -60,12 +60,12 @@ const InfoDetail = () => {
         )}
       </div>
 
-      <article className="bg-white rounded-xl ring-1 ring-gray-900/5 shadow-sm p-8">
+      <article className="bg-white rounded-lg ring-1 ring-gray-900/5 shadow-sm p-8">
         <header className="mb-8">
           <h1 className="text-3xl font-bold mb-4">{currentInfo.title}</h1>
           
           <div className="flex items-center gap-4 text-sm text-gray-600">
-            <span className="bg-secondary/80 text-black px-3 py-1 rounded-full">
+            <span className="bg-secondary/80 text-black px-3 py-1 rounded-lg">
               {currentInfo.category.name}
             </span>
             <time>

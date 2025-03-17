@@ -21,7 +21,7 @@ const ProfileActions = () => {
   };
 
   return (
-    <div className="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
+    <div className="bg-white p-5 rounded-lg border border-gray-200 shadow-sm">
       <h3 className="text-lg font-semibold mb-4">Actions</h3>
       <button 
         onClick={handleLogout}
