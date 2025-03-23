@@ -39,7 +39,7 @@ const Footer = () => {
         </div>
         
         <div className="mt-8 pt-4 border-t border-white/20 text-center text-sm">
-          <p>&copy; {currentYear} CESIZen. Tous droits réservés. <a href="#" className="hover:text-secondary underline transition-colors">mentions légales</a></p>
+          <p>&copy; {currentYear} CESIZen. Tous droits réservés. <Link to="/mentions-legales" className="hover:text-gray-300 transition-colors">mentions légales</Link></p>
         </div>
       </div>
     </footer>
