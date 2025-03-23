@@ -13,7 +13,7 @@ const LegalNotice = () => {
       <section className="mb-8">
         <h2 className="text-xl font-semibold mb-4">2. Hébergement</h2>
         <p className="mb-4">
-          [À compléter avec les informations de votre hébergeur]
+          [À voir avant la mise en production]
         </p>
       </section>
 

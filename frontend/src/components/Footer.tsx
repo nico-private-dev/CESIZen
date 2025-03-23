@@ -21,25 +21,25 @@ const Footer = () => {
             <div>
               <h4 className="text-lg font-semibold mb-2">Navigation</h4>
               <ul className="space-y-1">
-                <li><Link to="/" className="hover:text-gray-300 transition-colors">Accueil</Link></li>
-                <li><Link to="/exercice-respiration" className="hover:text-gray-300 transition-colors">Exercices de respiration</Link></li>
-                <li><Link to="/informations" className="hover:text-gray-300 transition-colors">Informations</Link></li>
+                <li><Link to="/" className="hover:text-secondary transition-colors">Accueil</Link></li>
+                <li><Link to="/exercice-respiration" className="hover:text-secondary transition-colors">Exercices de respiration</Link></li>
+                <li><Link to="/informations" className="hover:text-secondary transition-colors">Informations</Link></li>
               </ul>
             </div>
             
             <div>
               <h4 className="text-lg font-semibold mb-2">Compte</h4>
               <ul className="space-y-1">
-                <li><Link to="/mon-compte" className="hover:text-gray-300 transition-colors">Mon profil</Link></li>
-                <li><Link to="/login" className="hover:text-gray-300 transition-colors">Connexion</Link></li>
-                <li><Link to="/register" className="hover:text-gray-300 transition-colors">Inscription</Link></li>
+                <li><Link to="/mon-compte" className="hover:text-secondary transition-colors">Mon profil</Link></li>
+                <li><Link to="/login" className="hover:text-secondary transition-colors">Connexion</Link></li>
+                <li><Link to="/register" className="hover:text-secondary transition-colors">Inscription</Link></li>
               </ul>
             </div>
           </div>
         </div>
         
         <div className="mt-8 pt-4 border-t border-white/20 text-center text-sm">
-          <p>&copy; {currentYear} CESIZen. Tous droits réservés. <Link to="/mentions-legales" className="hover:text-gray-300 transition-colors">mentions légales</Link></p>
+          <p>&copy; {currentYear} CESIZen. Tous droits réservés. <Link to="/mentions-legales" className="hover:text-secondary transition-colors">mentions légales</Link></p>
         </div>
       </div>
     </footer>
