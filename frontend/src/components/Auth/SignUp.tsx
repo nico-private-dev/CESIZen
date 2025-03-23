@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 import useAuthStore from '../../stores/useAuthStore';
 
 const SignUp = () => {
@@ -114,6 +114,10 @@ const SignUp = () => {
             <button type="submit" className="w-full bg-primary text-white p-2 rounded-lg border-2 border-primary font-bold hover:bg-transparent hover:border-primary hover:text-primary transition duration-300 ease">S'inscrire</button>
             {error && <p className="text-red-500 mt-4">{error}</p>}
           </form>
+          <div className="flex justify-center mt-4 text-sm gap-2">
+            <span className="text-gray-700">Vous avez déjà un compte ? </span>
+            <Link to="/login" className="text-primary font-bold hover:underline hover:text-secondary">Se connecter</Link>
+          </div>
         </div>
       </div>
   );

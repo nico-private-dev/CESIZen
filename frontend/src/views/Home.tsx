@@ -93,7 +93,7 @@ const Home = () => {
       )}
 
       {/* Contenu principal */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 py-8 sm:py-12">
         <div className="text-center mb-12">
           <span className="uppercase text-primary font-semibold">Accueil</span>
           <h1 className="text-4xl font-bold mb-4">Apprenez et gérez votre stress facilement</h1>
