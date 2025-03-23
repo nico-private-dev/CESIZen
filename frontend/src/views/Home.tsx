@@ -108,8 +108,8 @@ const Home = () => {
               className={`${module.className} ${
                 module.isAvailable 
                   ? 'bg-white hover:bg-gray-50' 
-                  : 'bg-gray-100 cursor-not-allowed'
-              } p-6 sm:p-6 rounded-lg ring-1 ring-gray-900/5 shadow-sm transition-all duration-300 group`}
+                  : 'bg-gray-100 cursor-not-allowed comming-soon'
+              } relative p-6 sm:p-6 rounded-lg ring-1 ring-gray-900/5 shadow-sm transition-all duration-300 group`}
             >
               <div className="h-full flex flex-col justify-between">
                 <div>
