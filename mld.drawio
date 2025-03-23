@@ -1,0 +1,36 @@
+<mxfile host="app.diagrams.net" modified="2025-03-23T18:15:28.000Z" agent="Mozilla/5.0" version="21.1.9" type="device">
+  <diagram id="R2lEEEUBdFMjLlhIrx00" name="Page-1">
+    <mxGraphModel dx="1341" dy="763" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- User Collection -->
+        <mxCell id="user_collection" value="User&#xa;--&#xa;_id: ObjectId (PK)&#xa;username: String&#xa;firstname: String&#xa;lastname: String&#xa;email: String UNIQUE&#xa;password: String&#xa;role_id: ObjectId (FK → Role._id)" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=160;fillColor=#f5f5f5;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="280" height="160" as="geometry" />
+        </mxCell>
+        
+        <!-- Role Collection -->
+        <mxCell id="role_collection" value="Role&#xa;--&#xa;_id: ObjectId (PK)&#xa;name: String UNIQUE" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=80;fillColor=#f5f5f5;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="40" y="240" width="280" height="80" as="geometry" />
+        </mxCell>
+        
+        <!-- Info Collection -->
+        <mxCell id="info_collection" value="Info&#xa;--&#xa;_id: ObjectId (PK)&#xa;title: String&#xa;content: String&#xa;category_id: ObjectId (FK → InfoCategory._id)" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=120;fillColor=#f5f5f5;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="400" y="40" width="280" height="120" as="geometry" />
+        </mxCell>
+        
+        <!-- InfoCategory Collection -->
+        <mxCell id="info_category_collection" value="InfoCategory&#xa;--&#xa;_id: ObjectId (PK)&#xa;name: String UNIQUE&#xa;description: String" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=100;fillColor=#f5f5f5;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="400" y="200" width="280" height="100" as="geometry" />
+        </mxCell>
+        
+        <!-- Exercise Collection -->
+        <mxCell id="exercise_collection" value="Exercise&#xa;--&#xa;_id: ObjectId (PK)&#xa;title: String&#xa;description: String&#xa;inspiration: Number&#xa;apnee: Number&#xa;expiration: Number" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=160;fillColor=#f5f5f5;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="220" y="360" width="280" height="160" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
