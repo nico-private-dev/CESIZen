@@ -1,71 +1,171 @@
-### Étapes de développement
+# CESIZen
 
-1. **Création du dépôt GitHub :**
-   - Créez un nouveau dépôt sur GitHub pour votre projet. Cela vous permettra de suivre les modifications et de collaborer si nécessaire.
+CESIZen est une application web dédiée à la gestion du stress et au bien-être mental, développée spécifiquement pour les étudiants et le personnel du CESI.
 
-2. **Configuration de la base de données MongoDB :**
-   - Créez un compte sur MongoDB Atlas (ou utilisez une instance locale) et configurez votre base de données.
-   - Créez les collections nécessaires, par exemple : `users`, `articles`, `breathing_exercises`.
+## Fonctionnalités
 
-3. **Initialisation du projet :**
-   - Créez un nouveau projet avec Vite en utilisant TypeScript :
-     ```bash
-     npm create vite@latest cesizen --template react-ts
-     cd cesizen
-     npm install
-     ```
-   - Installez Tailwind CSS :
-     ```bash
-     npm install -D tailwindcss postcss autoprefixer
-     npx tailwindcss init -p
-     ```
-   - Configurez Tailwind en ajoutant les chemins de vos fichiers dans `tailwind.config.js`.
+- **Authentification** : Système complet d'inscription, connexion et gestion de compte
+- **Articles d'information** : Consultation d'articles sur la gestion du stress et le bien-être
+- **Exercices de respiration** : Accès à des exercices guidés pour la relaxation
+- **Rôles utilisateurs** : Distinction entre utilisateurs standards et administrateurs
+- **Interface administrateur** : Gestion des articles et des exercices
 
-4. **Mise en place de l'API avec Express :**
-   - Créez un dossier `server` à la racine de votre projet pour votre backend.
-   - Initialisez un projet Node.js :
-     ```bash
-     cd server
-     npm init -y
-     npm install express mongoose dotenv jsonwebtoken bcryptjs cors
-     ```
-   - Créez un fichier `server.js` et configurez votre serveur Express.
+## Technologies utilisées
 
-5. **Authentification :**
-   - Créez un système d'inscription et de connexion avec JWT (JSON Web Tokens).
-   - Utilisez `bcryptjs` pour le hachage des mots de passe.
-   - Implémentez un middleware pour protéger les routes.
+### Backend
+- Node.js avec Express et TypeScript
+- MongoDB (via Mongoose) pour la base de données
+- JWT et cookies pour l'authentification
+- bcryptjs pour le hachage des mots de passe
 
-6. **Gestion des rôles :**
-   - Ajoutez un champ `role` dans votre modèle utilisateur pour gérer les rôles (utilisateur et administrateur).
-   - Créez des routes protégées pour les administrateurs.
+### Frontend
+- React avec TypeScript
+- Vite comme bundler
+- Tailwind CSS pour le style
+- React Router pour la navigation
+- Zustand pour la gestion d'état
+- Axios pour les requêtes API
 
-7. **Module d'informations :**
-   - Créez un modèle pour les articles d'information sur la gestion du stress.
-   - Implémentez des routes CRUD (Créer, Lire, Mettre à jour, Supprimer) pour les administrateurs.
+## Installation et configuration
 
-8. **Module d'exercices de respiration :**
-   - Créez un modèle pour les exercices de respiration.
-   - Permettez aux utilisateurs de créer et de personnaliser leurs exercices.
+### Prérequis
+- Node.js (v14 ou supérieur)
+- MongoDB (local ou Atlas)
+- npm ou pnpm
 
-9. **PWA (Progressive Web App) :**
-   - Ajoutez un fichier `manifest.json` et configurez-le pour que votre application soit une PWA.
-   - Utilisez un service worker pour gérer le cache et les notifications.
+### Installation du backend
 
-10. **Structure MVC :**
-    - Organisez votre code en suivant le modèle MVC (Modèle, Vue, Contrôleur).
-    - Créez des dossiers pour les modèles, les contrôleurs et les routes dans votre backend.
+1. Naviguez vers le dossier backend :
+   ```bash
+   cd backend
+   ```
 
-11. **Backoffice pour les administrateurs :**
-    - Créez une interface utilisateur pour les administrateurs afin de gérer les articles et les exercices.
-    - Utilisez des composants React pour afficher et gérer les données.
+2. Installez les dépendances :
+   ```bash
+   npm install
+   # ou
+   pnpm install
+   ```
 
-### Conseils supplémentaires
+3. Créez un fichier `.env` à la racine du dossier backend avec les variables suivantes :
+   ```
+   PORT=5001
+   MONGODB_URI=votre_uri_mongodb
+   JWT_SECRET=votre_secret_jwt
+   JWT_REFRESH_SECRET=votre_secret_refresh_jwt
+   NODE_ENV=development
+   ```
 
-- **Documentation :** Documentez votre code et votre API pour faciliter la compréhension et la maintenance.
-- **Tests :** Écrivez des tests unitaires et d'intégration pour assurer la qualité de votre application.
-- **Déploiement :** Une fois que votre application est prête, envisagez de la déployer sur des plateformes comme Heroku pour le backend et Vercel ou Netlify pour le frontend.
+4. Initialisez les rôles dans la base de données :
+   ```bash
+   npm run initRoles
+   # ou
+   pnpm run initRoles
+   ```
 
-### Conclusion
+5. Lancez le serveur en mode développement :
+   ```bash
+   npm run dev
+   # ou
+   pnpm run dev
+   ```
 
-Ce projet a beaucoup de potentiel et peut être très enrichissant à réaliser. En suivant ces étapes, vous pourrez structurer votre travail et avancer efficacement. N'hésitez pas à poser des questions ou à demander des précisions sur certaines parties du projet. Bonne chance !
+### Installation du frontend
+
+1. Naviguez vers le dossier frontend :
+   ```bash
+   cd frontend
+   ```
+
+2. Installez les dépendances :
+   ```bash
+   npm install
+   # ou
+   pnpm install
+   ```
+
+3. Lancez l'application en mode développement :
+   ```bash
+   npm run dev
+   # ou
+   pnpm run dev
+   ```
+
+## Structure du projet
+
+```
+cesizen/
+├── backend/                # Serveur Express
+│   ├── config/             # Configuration (base de données, etc.)
+│   ├── controllers/        # Contrôleurs pour la logique métier
+│   ├── middleware/         # Middleware (authentification, etc.)
+│   ├── models/             # Modèles Mongoose
+│   ├── routes/             # Routes API
+│   ├── types/              # Types TypeScript
+│   ├── utils/              # Utilitaires
+│   └── server.ts           # Point d'entrée du serveur
+│
+├── frontend/               # Application React
+│   ├── public/             # Fichiers statiques
+│   └── src/                # Code source
+│       ├── components/     # Composants React
+│       ├── pages/          # Pages de l'application
+│       ├── services/       # Services pour les appels API
+│       ├── stores/         # Stores Zustand
+│       └── types/          # Types TypeScript
+```
+
+## API Endpoints
+
+### Authentification
+- `POST /api/auth/register` - Inscription
+- `POST /api/auth/login` - Connexion
+- `GET /api/auth/mon-compte` - Informations utilisateur
+- `POST /api/auth/refresh` - Rafraîchir le token
+- `POST /api/auth/logout` - Déconnexion
+- `PUT /api/auth/update-username` - Mettre à jour le nom d'utilisateur
+
+### Articles d'information
+- `GET /api/info/articles` - Liste tous les articles
+- `GET /api/info/articles/:id` - Récupère un article spécifique
+- `POST /api/info/articles` - Crée un nouvel article (admin)
+- `PUT /api/info/articles/:id` - Met à jour un article (admin)
+- `DELETE /api/info/articles/:id` - Supprime un article (admin)
+
+### Exercices de respiration
+- `GET /api/exercice-respiration` - Liste tous les exercices
+- `GET /api/exercice-respiration/:id` - Récupère un exercice spécifique
+- `POST /api/exercice-respiration` - Crée un nouvel exercice (admin)
+- `PUT /api/exercice-respiration/:id` - Met à jour un exercice (admin)
+- `DELETE /api/exercice-respiration/:id` - Supprime un exercice (admin)
+
+## Notes importantes
+
+- Le backend fonctionne sur le port 5001
+- L'authentification utilise des cookies et non des headers
+- Toutes les requêtes authentifiées doivent utiliser l'option `withCredentials: true` avec axios
+- Les routes frontend utilisent le pluriel pour les informations/articles (/informations, /informations/:id)
+
+## Développement
+
+Pour construire le projet pour la production :
+
+### Backend
+```bash
+cd backend
+npm run build
+# ou
+pnpm run build
+```
+
+### Frontend
+```bash
+cd frontend
+npm run build
+# ou
+pnpm run build
+```
+
+## Licence
+
+Ce projet est développé dans le cadre d'un projet étudiant pour le CESI.
