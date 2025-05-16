@@ -2,6 +2,8 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import swaggerUi from 'swagger-ui-express';
+import swaggerSpec from './config/swagger';
 import connectDB from './config/db';
 import authRoutes from './routes/authRoutes';
 import roleRoutes from './routes/roleRoutes';
@@ -30,6 +32,13 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization'] 
 }));
 
+// Swagger Documentation
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+  explorer: true,
+  customCss: '.swagger-ui .topbar { display: none }',
+  customSiteTitle: 'CESIZen API Documentation'
+}));
+
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api', roleRoutes);
@@ -41,4 +50,5 @@ app.use('/api', exerciseRoutes);
 // Vérification du port sur lequel tourne l'application
 app.listen(PORT, () => {
   console.log(`Le serveur tourne sur le port ${PORT} 🔥`);
+  console.log(`Documentation Swagger disponible sur http://localhost:${PORT}/api-docs`);
 });
