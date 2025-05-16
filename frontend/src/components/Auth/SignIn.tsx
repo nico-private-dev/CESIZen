@@ -35,7 +35,7 @@ const SignIn = () => {
         </div>
         <div className='bg-white p-8 border border-gray-300 rounded-lg mt-8 mb-12'>
           <h2 className="text-2xl font-bold mb-4">Connexion</h2>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} data-testid="login-form">
             <div className="mb-4">
               <label className="block text-gray-700">Nom d'utilisateur ou email</label>
               <input
@@ -43,6 +43,7 @@ const SignIn = () => {
                 value={login}
                 onChange={(e) => setLogin(e.target.value)}
                 className="w-full p-2 border border-gray-300 rounded-lg mt-1"
+                data-testid="email-input"
               />
             </div>
             <div className="mb-4">
@@ -52,14 +53,21 @@ const SignIn = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full p-2 border border-gray-300 rounded-lg mt-1"
+                data-testid="password-input"
               />
             </div>
-            <button type="submit" className="w-full bg-primary text-white p-2 rounded-lg border-2 border-primary font-bold hover:bg-transparent hover:border-primary hover:text-primary transition duration-300 ease">Se connecter</button>
-            {error && <p className="text-red-500 mt-4">{error}</p>}
+            <button 
+              type="submit" 
+              className="w-full bg-primary text-white p-2 rounded-lg border-2 border-primary font-bold hover:bg-transparent hover:border-primary hover:text-primary transition duration-300 ease"
+              data-testid="login-button"
+            >
+              Se connecter
+            </button>
+            {error && <p className="text-red-500 mt-4" data-testid="error-message">{error}</p>}
           </form>
           <div className="flex justify-center mt-4 text-sm gap-2">
             <span className="text-gray-700">Vous n'avez pas de compte ? </span>
-            <Link to="/register" className="text-primary font-bold hover:underline hover:text-secondary">Créer un compte</Link>
+            <Link to="/register" className="text-primary font-bold hover:underline hover:text-secondary" data-testid="register-link">Créer un compte</Link>
           </div>
         </div>
       </div>

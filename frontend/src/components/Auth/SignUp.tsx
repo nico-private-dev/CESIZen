@@ -46,7 +46,7 @@ const SignUp = () => {
         </div>
         <div className='bg-white p-8 border border-gray-300 rounded-lg mt-8 mb-12'>
           <h2 className="text-2xl font-bold mb-4">Inscrire</h2>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} data-testid="register-form">
             <div className='flex-col md:flex-row flex gap-4'>
               <div className="mb-4">
                 <label className="block text-gray-700">Nom</label>
@@ -55,6 +55,7 @@ const SignUp = () => {
                   value={firstname}
                   onChange={(e) => setFirstname(e.target.value)}
                   className="w-full p-2 border border-gray-300 rounded-lg mt-1"
+                  data-testid="firstname-input"
                 />
               </div>
               <div className="mb-4">
@@ -64,6 +65,7 @@ const SignUp = () => {
                   value={lastname}
                   onChange={(e) => setLastname(e.target.value)}
                   className="w-full p-2 border border-gray-300 rounded-lg mt-1"
+                  data-testid="lastname-input"
                 />
               </div>
             </div>
@@ -75,6 +77,7 @@ const SignUp = () => {
                 onChange={(e) => setUsername(e.target.value)}
                 className="w-full p-2 border border-gray-300 rounded-lg mt-1"
                 required
+                data-testid="username-input"
               />
             </div>
             <div className="mb-4">
@@ -84,6 +87,7 @@ const SignUp = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full p-2 border border-gray-300 rounded-lg mt-1"
+                data-testid="email-input"
               />
             </div>
             <div className="mb-4">
@@ -93,6 +97,7 @@ const SignUp = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full p-2 border border-gray-300 rounded-lg mt-1"
+                data-testid="password-input"
               />
             </div>
             <div className="mb-4">
@@ -106,17 +111,24 @@ const SignUp = () => {
               }`}
               required
               minLength={6}
+              data-testid="confirm-password-input"
             />
             {passwordError && (
-              <p className="text-red-500 text-sm mt-1">{passwordError}</p>
+              <p className="text-red-500 text-sm mt-1" data-testid="password-error">{passwordError}</p>
             )}
           </div>
-            <button type="submit" className="w-full bg-primary text-white p-2 rounded-lg border-2 border-primary font-bold hover:bg-transparent hover:border-primary hover:text-primary transition duration-300 ease">S'inscrire</button>
-            {error && <p className="text-red-500 mt-4">{error}</p>}
+            <button 
+              type="submit" 
+              className="w-full bg-primary text-white p-2 rounded-lg border-2 border-primary font-bold hover:bg-transparent hover:border-primary hover:text-primary transition duration-300 ease"
+              data-testid="register-button"
+            >
+              S'inscrire
+            </button>
+            {error && <p className="text-red-500 mt-4" data-testid="error-message">{error}</p>}
           </form>
           <div className="flex justify-center mt-4 text-sm gap-2">
             <span className="text-gray-700">Vous avez déjà un compte ? </span>
-            <Link to="/login" className="text-primary font-bold hover:underline hover:text-secondary">Se connecter</Link>
+            <Link to="/login" className="text-primary font-bold hover:underline hover:text-secondary" data-testid="login-link">Se connecter</Link>
           </div>
         </div>
       </div>
