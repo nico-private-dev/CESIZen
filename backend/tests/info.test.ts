@@ -15,14 +15,12 @@ describe('Info Controller Tests', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     
-    // Créer un mock de la requête
     mockRequest = {
       body: {},
       params: {},
       user: undefined
     };
     
-    // Créer un mock de la réponse
     responseObject = {
       statusCode: 0,
       json: jest.fn().mockReturnThis(),
@@ -35,11 +33,11 @@ describe('Info Controller Tests', () => {
   });
 
   afterAll(async () => {
-    // Fermer la connexion à la base de données après tous les tests
     await mongoose.connection.close();
   });
 
-  describe('getInfo', () => {
+  // Tests unitaires récupération articles
+  describe('UT-INFO-01 : Fonction de récupération de tous les articles', () => {
     it('should return all articles with their categories', async () => {
       // Configurer les mocks
       const mockArticles = [
@@ -63,7 +61,6 @@ describe('Info Controller Tests', () => {
         }
       ];
       
-      // Mock de la méthode find() de Info
       const mockFind = {
         populate: jest.fn().mockReturnThis(),
         sort: jest.fn().mockResolvedValue(mockArticles)
@@ -71,10 +68,8 @@ describe('Info Controller Tests', () => {
       
       (Info.find as jest.Mock).mockReturnValue(mockFind);
       
-      // Appeler la fonction à tester
       await getInfo(mockRequest as Request, mockResponse as Response);
       
-      // Vérifier les résultats
       expect(Info.find).toHaveBeenCalled();
       expect(mockFind.populate).toHaveBeenCalledWith('category');
       expect(mockFind.sort).toHaveBeenCalledWith({ createdAt: -1 });
@@ -91,10 +86,8 @@ describe('Info Controller Tests', () => {
       
       (Info.find as jest.Mock).mockReturnValue(mockFind);
       
-      // Appeler la fonction à tester
       await getInfo(mockRequest as Request, mockResponse as Response);
       
-      // Vérifier les résultats
       expect(responseObject.statusCode).toBe(500);
       expect(responseObject.json).toHaveBeenCalledWith({
         message: 'Database error'
@@ -102,7 +95,8 @@ describe('Info Controller Tests', () => {
     });
   });
 
-  describe('getInfoById', () => {
+  // Tests unitaires récupération un article
+  describe('UT-INFO-02 : Fonction de récupération d\'un article par ID', () => {
     it('should return a specific article by ID', async () => {
       // Configurer les mocks
       const articleId = 'article1';
@@ -118,33 +112,26 @@ describe('Info Controller Tests', () => {
         }
       };
       
-      // Mock de la méthode findById() de Info avec populate
       const mockFindByIdPopulate = jest.fn().mockResolvedValue(mockArticle);
       const mockFindById = jest.fn().mockReturnValue({ populate: mockFindByIdPopulate });
       jest.spyOn(Info, 'findById').mockImplementation(mockFindById);
       
-      // Appeler la fonction à tester
       await getInfoById(mockRequest as Request, mockResponse as Response);
       
-      // Vérifier les résultats
       expect(Info.findById).toHaveBeenCalledWith(articleId);
       expect(mockFindByIdPopulate).toHaveBeenCalledWith('category');
       expect(responseObject.json).toHaveBeenCalledWith(mockArticle);
     });
 
     it('should return 404 if article not found', async () => {
-      // Configurer les mocks
       mockRequest.params = { id: 'nonexistent' };
       
-      // Mock de la méthode findById() de Info avec populate
       const mockFindByIdPopulate = jest.fn().mockResolvedValue(null);
       const mockFindById = jest.fn().mockReturnValue({ populate: mockFindByIdPopulate });
       jest.spyOn(Info, 'findById').mockImplementation(mockFindById);
       
-      // Appeler la fonction à tester
       await getInfoById(mockRequest as Request, mockResponse as Response);
       
-      // Vérifier les résultats
       expect(responseObject.statusCode).toBe(404);
       expect(responseObject.json).toHaveBeenCalledWith({
         message: 'Article non trouvé'
@@ -152,19 +139,15 @@ describe('Info Controller Tests', () => {
     });
 
     it('should handle errors and return 500', async () => {
-      // Configurer les mocks
       mockRequest.params = { id: 'article1' };
       
-      // Mock de la méthode findById() de Info pour lancer une erreur
       const mockError = new Error('Database error');
       jest.spyOn(Info, 'findById').mockImplementation(() => {
         throw mockError;
       });
       
-      // Appeler la fonction à tester
       await getInfoById(mockRequest as Request, mockResponse as Response);
       
-      // Vérifier les résultats
       expect(responseObject.statusCode).toBe(500);
       expect(responseObject.json).toHaveBeenCalledWith({
         message: 'Database error'
@@ -172,7 +155,8 @@ describe('Info Controller Tests', () => {
     });
   });
 
-  describe('createInfo', () => {
+  // Tests unitaires création article
+  describe('UT-INFO-03 : Fonction de création d\'un article', () => {
     it('should create a new article successfully', async () => {
       // Configurer les mocks
       const articleData = {
@@ -198,34 +182,27 @@ describe('Info Controller Tests', () => {
         }
       };
       
-      // Mock du constructeur et save
       const mockSave = jest.fn().mockResolvedValue(savedArticle);
       (Info as unknown as jest.Mock).mockImplementation(() => ({
         ...articleData,
         save: mockSave
       }));
       
-      // Mock de findById avec populate
       const mockFindByIdPopulate = jest.fn().mockResolvedValue(populatedArticle);
       const mockFindById = jest.fn().mockReturnValue({ populate: mockFindByIdPopulate });
       jest.spyOn(Info, 'findById').mockImplementation(mockFindById);
       
-      // Appeler la fonction à tester
       await createInfo(mockRequest as Request, mockResponse as Response);
       
-      // Vérifier les résultats
       expect(responseObject.statusCode).toBe(201);
       expect(responseObject.json).toHaveBeenCalledWith(populatedArticle);
     });
 
     it('should handle validation errors and return 400', async () => {
-      // Configurer les mocks avec des données incomplètes
       mockRequest.body = {
         title: 'Incomplete Article'
-        // content et category manquants
       };
       
-      // Mock du constructeur pour lancer une erreur
       const mockError = new Error('Validation error');
       const mockSave = jest.fn().mockRejectedValue(mockError);
       (Info as unknown as jest.Mock).mockImplementation(() => ({
@@ -233,10 +210,8 @@ describe('Info Controller Tests', () => {
         save: mockSave
       }));
       
-      // Appeler la fonction à tester
       await createInfo(mockRequest as Request, mockResponse as Response);
       
-      // Vérifier les résultats
       expect(responseObject.statusCode).toBe(400);
       expect(responseObject.json).toHaveBeenCalledWith({
         message: 'Validation error'
@@ -244,9 +219,9 @@ describe('Info Controller Tests', () => {
     });
   });
 
-  describe('updateInfo', () => {
+  // Tests unitaires mise à jour article
+  describe('UT-INFO-04 : Fonction de mise à jour d\'un article', () => {
     it('should update an article successfully', async () => {
-      // Configurer les mocks
       const articleId = 'article1';
       const updateData = {
         title: 'Updated Title',
@@ -266,15 +241,12 @@ describe('Info Controller Tests', () => {
         }
       };
       
-      // Mock de la méthode findByIdAndUpdate() de Info avec populate
       const mockFindByIdAndUpdatePopulate = jest.fn().mockResolvedValue(updatedArticle);
       const mockFindByIdAndUpdate = jest.fn().mockReturnValue({ populate: mockFindByIdAndUpdatePopulate });
       jest.spyOn(Info, 'findByIdAndUpdate').mockImplementation(mockFindByIdAndUpdate);
       
-      // Appeler la fonction à tester
       await updateInfo(mockRequest as Request, mockResponse as Response);
       
-      // Vérifier les résultats
       expect(mockFindByIdAndUpdate).toHaveBeenCalledWith(
         articleId,
         updateData,
@@ -285,7 +257,6 @@ describe('Info Controller Tests', () => {
     });
 
     it('should return 404 if article not found', async () => {
-      // Configurer les mocks
       mockRequest.params = { id: 'nonexistent' };
       mockRequest.body = {
         title: 'Updated Title',
@@ -293,15 +264,12 @@ describe('Info Controller Tests', () => {
         category: 'updatedcategory'
       };
       
-      // Mock de la méthode findByIdAndUpdate() de Info avec populate
       const mockFindByIdAndUpdatePopulate = jest.fn().mockResolvedValue(null);
       const mockFindByIdAndUpdate = jest.fn().mockReturnValue({ populate: mockFindByIdAndUpdatePopulate });
       jest.spyOn(Info, 'findByIdAndUpdate').mockImplementation(mockFindByIdAndUpdate);
       
-      // Appeler la fonction à tester
       await updateInfo(mockRequest as Request, mockResponse as Response);
       
-      // Vérifier les résultats
       expect(responseObject.statusCode).toBe(404);
       expect(responseObject.json).toHaveBeenCalledWith({
         message: 'Article non trouvé'
@@ -309,23 +277,18 @@ describe('Info Controller Tests', () => {
     });
 
     it('should handle errors and return 400', async () => {
-      // Configurer les mocks
       mockRequest.params = { id: 'article1' };
       mockRequest.body = {
         title: 'Invalid Title'
-        // Données incomplètes pour provoquer une erreur
       };
       
-      // Mock de la méthode findByIdAndUpdate() de Info pour lancer une erreur
       const mockError = new Error('Validation error');
       jest.spyOn(Info, 'findByIdAndUpdate').mockImplementation(() => {
         throw mockError;
       });
       
-      // Appeler la fonction à tester
       await updateInfo(mockRequest as Request, mockResponse as Response);
       
-      // Vérifier les résultats
       expect(responseObject.statusCode).toBe(400);
       expect(responseObject.json).toHaveBeenCalledWith({
         message: 'Validation error'
@@ -333,9 +296,9 @@ describe('Info Controller Tests', () => {
     });
   });
 
-  describe('deleteInfo', () => {
+  // Tests unitaires suppression article
+  describe('UT-INFO-05 : Fonction de suppression d\'un article', () => {
     it('should delete an article successfully', async () => {
-      // Configurer les mocks
       const articleId = 'article1';
       mockRequest.params = { id: articleId };
       
@@ -349,13 +312,10 @@ describe('Info Controller Tests', () => {
         }
       };
       
-      // Mock de la méthode findByIdAndDelete() de Info avec jest.spyOn
       jest.spyOn(Info, 'findByIdAndDelete').mockResolvedValue(deletedArticle);
       
-      // Appeler la fonction à tester
       await deleteInfo(mockRequest as Request, mockResponse as Response);
       
-      // Vérifier les résultats
       expect(Info.findByIdAndDelete).toHaveBeenCalledWith(articleId);
       expect(responseObject.json).toHaveBeenCalledWith({
         message: 'Article supprimé avec succès'
@@ -363,16 +323,12 @@ describe('Info Controller Tests', () => {
     });
 
     it('should return 404 if article not found', async () => {
-      // Configurer les mocks
       mockRequest.params = { id: 'nonexistent' };
       
-      // Mock de la méthode findByIdAndDelete() de Info avec jest.spyOn
       jest.spyOn(Info, 'findByIdAndDelete').mockResolvedValue(null);
       
-      // Appeler la fonction à tester
       await deleteInfo(mockRequest as Request, mockResponse as Response);
       
-      // Vérifier les résultats
       expect(responseObject.statusCode).toBe(404);
       expect(responseObject.json).toHaveBeenCalledWith({
         message: 'Article non trouvé'
@@ -380,19 +336,15 @@ describe('Info Controller Tests', () => {
     });
 
     it('should handle errors and return 500', async () => {
-      // Configurer les mocks
       mockRequest.params = { id: 'article1' };
       
-      // Mock de la méthode findByIdAndDelete() de Info avec jest.spyOn
       const mockError = new Error('Database error');
       jest.spyOn(Info, 'findByIdAndDelete').mockImplementation(() => {
         throw mockError;
       });
       
-      // Appeler la fonction à tester
       await deleteInfo(mockRequest as Request, mockResponse as Response);
       
-      // Vérifier les résultats
       expect(responseObject.statusCode).toBe(500);
       expect(responseObject.json).toHaveBeenCalledWith({
         message: 'Database error'

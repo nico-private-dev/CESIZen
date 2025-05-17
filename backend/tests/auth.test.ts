@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { signUp, signIn, getMe, refresh, logout } from '../controllers/authController';
+import { signUp, signIn, logout } from '../controllers/authController';
 import UserModel from '../models/userModel';
 import RoleModel from '../models/roleModels';
 import { IAuthRequest } from '../types/auth';
@@ -13,6 +13,7 @@ jest.mock('../models/roleModels');
 jest.mock('bcryptjs');
 jest.mock('jsonwebtoken');
 
+
 describe('Auth Controller Tests', () => {
   let mockRequest: Partial<IAuthRequest>;
   let mockResponse: Partial<Response>;
@@ -21,14 +22,12 @@ describe('Auth Controller Tests', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     
-    // Créer un mock de la requête
     mockRequest = {
       body: {},
       cookies: {},
       user: undefined
     };
     
-    // Créer un mock de la réponse
     responseObject = {
       statusCode: 0,
       json: jest.fn().mockReturnThis(),
@@ -42,13 +41,12 @@ describe('Auth Controller Tests', () => {
   });
 
   afterAll(async () => {
-    // Fermer la connexion à la base de données après tous les tests
     await mongoose.connection.close();
   });
 
-  describe('signUp', () => {
+  // Tests unitaires inscription
+  describe('UT-AUTH-01 : Fonction de connexion', () => {
     it('should create a new user successfully', async () => {
-      // Configurer les mocks
       const userData = {
         username: 'testuser',
         firstname: 'Test',
@@ -76,16 +74,13 @@ describe('Auth Controller Tests', () => {
         })
       };
       
-      // Mock des fonctions externes
       (RoleModel.findOne as jest.Mock).mockResolvedValue(mockRole);
       (bcrypt.hash as jest.Mock).mockResolvedValue('hashedPassword');
       (UserModel.create as jest.Mock).mockResolvedValue(mockUser);
       (jwt.sign as jest.Mock).mockReturnValue('mock-token');
       
-      // Appeler la fonction à tester
       await signUp(mockRequest as IAuthRequest, mockResponse as Response);
       
-      // Vérifier les résultats
       expect(RoleModel.findOne).toHaveBeenCalledWith({ name: userData.roleName });
       expect(bcrypt.hash).toHaveBeenCalledWith(userData.password, 12);
       expect(UserModel.create).toHaveBeenCalledWith({
@@ -104,7 +99,6 @@ describe('Auth Controller Tests', () => {
     });
 
     it('should return 400 if user already exists', async () => {
-      // Configurer les mocks
       mockRequest.body = {
         username: 'existinguser',
         firstname: 'Existing',
@@ -114,10 +108,8 @@ describe('Auth Controller Tests', () => {
         roleName: 'user'
       };
       
-      // Mock pour simuler un utilisateur existant
       (UserModel.findOne as jest.Mock).mockResolvedValue({ _id: 'existing123' });
       
-      // Appeler la fonction à tester
       await signUp(mockRequest as IAuthRequest, mockResponse as Response);
       
       // Vérifier les résultats
@@ -128,9 +120,9 @@ describe('Auth Controller Tests', () => {
     });
   });
 
-  describe('signIn', () => {
+  // Tests unitaires connexion
+  describe('UT-AUTH-02 : Fonction de connexion', () => {
     it('should sign in a user successfully', async () => {
-      // Configurer les mocks
       mockRequest.body = {
         login: 'test@example.com',
         password: 'password123'
@@ -150,17 +142,14 @@ describe('Auth Controller Tests', () => {
         })
       };
       
-      // Mock des fonctions externes
       (UserModel.findOne as jest.Mock).mockReturnValue({
         populate: jest.fn().mockResolvedValue(mockUser)
       });
       (bcrypt.compare as jest.Mock).mockResolvedValue(true);
       (jwt.sign as jest.Mock).mockReturnValue('mock-token');
       
-      // Appeler la fonction à tester
       await signIn(mockRequest as IAuthRequest, mockResponse as Response);
       
-      // Vérifier les résultats
       expect(UserModel.findOne).toHaveBeenCalledWith({
         $or: [
           { email: mockRequest.body.login },
@@ -176,18 +165,15 @@ describe('Auth Controller Tests', () => {
     });
 
     it('should return 404 if user not found', async () => {
-      // Configurer les mocks
       mockRequest.body = {
         login: 'nonexistent@example.com',
         password: 'password123'
       };
       
-      // Mock pour simuler un utilisateur non trouvé
       (UserModel.findOne as jest.Mock).mockReturnValue({
         populate: jest.fn().mockResolvedValue(null)
       });
       
-      // Appeler la fonction à tester
       await signIn(mockRequest as IAuthRequest, mockResponse as Response);
       
       // Vérifier les résultats
@@ -198,7 +184,6 @@ describe('Auth Controller Tests', () => {
     });
 
     it('should return 400 if password is incorrect', async () => {
-      // Configurer les mocks
       mockRequest.body = {
         login: 'test@example.com',
         password: 'wrongpassword'
@@ -210,16 +195,13 @@ describe('Auth Controller Tests', () => {
         password: 'hashedPassword'
       };
       
-      // Mock des fonctions externes
       (UserModel.findOne as jest.Mock).mockReturnValue({
         populate: jest.fn().mockResolvedValue(mockUser)
       });
       (bcrypt.compare as jest.Mock).mockResolvedValue(false);
       
-      // Appeler la fonction à tester
       await signIn(mockRequest as IAuthRequest, mockResponse as Response);
       
-      // Vérifier les résultats
       expect(responseObject.statusCode).toBe(400);
       expect(responseObject.json).toHaveBeenCalledWith(expect.objectContaining({
         message: 'Mot de passe incorrect'
@@ -227,12 +209,11 @@ describe('Auth Controller Tests', () => {
     });
   });
 
-  describe('logout', () => {
+  // Tests unitaires déconnexion
+  describe('UT-AUTH-03 : Fonction de déconnexion', () => {
     it('should clear cookies and return success message', async () => {
-      // Appeler la fonction à tester
       await logout(mockRequest as Request, mockResponse as Response);
       
-      // Vérifier les résultats
       expect(mockResponse.cookie).toHaveBeenCalledTimes(2);
       expect(mockResponse.cookie).toHaveBeenCalledWith('accessToken', '', expect.any(Object));
       expect(mockResponse.cookie).toHaveBeenCalledWith('refreshToken', '', expect.any(Object));
