@@ -65,7 +65,7 @@ const SignIn = () => {
             </button>
             {error && <p className="text-red-500 mt-4" data-testid="error-message">{error}</p>}
           </form>
-          <div className="flex justify-center mt-4 text-sm gap-2">
+          <div className="flex flex-col items-center md:flex-row justify-center mt-4 text-sm gap-2">
             <span className="text-gray-700">Vous n'avez pas de compte ? </span>
             <Link to="/register" className="text-primary font-bold hover:underline hover:text-secondary" data-testid="register-link">Créer un compte</Link>
           </div>
