@@ -9,13 +9,10 @@ const api = axios.create({
 })
 
 interface AuthState {
-  // État
   user: IUser | null
   isAuthenticated: boolean
   loading: boolean
   error: string | null
-
-  // Actions
   register: (username: string, firstname: string, lastname: string, email: string, password: string, roleName: string) => Promise<void>
   login: (login: string, password: string) => Promise<void>
   logout: () => Promise<void>
@@ -23,12 +20,14 @@ interface AuthState {
   checkAuth: () => Promise<void>
 }
 
+// Création du store
 const useAuthStore = create<AuthState>((set, get) => ({
   user: null,
   isAuthenticated: false,
   loading: true,
   error: null,
 
+  // Vérification de l'authentification
   checkAuth: async () => {
     try {
       const response = await api.get('/auth/mon-compte')
@@ -43,6 +42,7 @@ const useAuthStore = create<AuthState>((set, get) => ({
     }
   },
 
+  // INSCRIPTION
   register: async (username, firstname, lastname, email, password, roleName) => {
     try {
       const response = await api.post('/auth/register', {
@@ -60,6 +60,7 @@ const useAuthStore = create<AuthState>((set, get) => ({
     }
   },
 
+  // CONNEXION
   login: async (login, password) => {
     try {
       const response = await api.post('/auth/login', { login, password })
@@ -70,6 +71,7 @@ const useAuthStore = create<AuthState>((set, get) => ({
     }
   },
 
+  // DECONNEXION
   logout: async () => {
     try {
       await api.post('/auth/logout')
@@ -79,6 +81,7 @@ const useAuthStore = create<AuthState>((set, get) => ({
     }
   },
 
+  // MISE A JOUR DU NOM D'UTILISATEUR
   updateUsername: async (newUsername) => {
     try {
       const response = await api.put('/auth/update-username', 

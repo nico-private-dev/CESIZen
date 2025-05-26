@@ -67,7 +67,6 @@ export const signIn = async (req: IAuthRequest, res: Response) => {
   const { login, password } = req.body;
 
   try {
-    // Recherche par email OU username
     const existingUser = await UserModel.findOne({
       $or: [
         { email: login },
@@ -79,7 +78,6 @@ export const signIn = async (req: IAuthRequest, res: Response) => {
       return res.status(404).json({ message: 'Utilisateur non trouvé' });
     }
 
-    // Reste de votre logique existante
     const isPasswordCorrect = await bcrypt.compare(password, existingUser.password);
 
     if (!isPasswordCorrect) {
