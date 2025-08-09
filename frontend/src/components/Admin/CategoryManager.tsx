@@ -21,7 +21,7 @@ const CategoryManager = () => {
   const fetchCategories = async () => {
     setLoading(true);
     try {
-      const response = await axios.get<ICategory[]>('http://localhost:5001/api/info/categories', {
+      const response = await axios.get<ICategory[]>('/api/info/categories', {
         withCredentials: true
       });
       setCategories(response.data);
@@ -46,7 +46,7 @@ const CategoryManager = () => {
     setLoading(true);
     try {
       const response = await axios.post<ICategory>(
-        'http://localhost:5001/api/info/categories', 
+        '/api/info/categories', 
         {
           name,
           description
@@ -81,7 +81,7 @@ const CategoryManager = () => {
     setLoading(true);
     try {
       const response = await axios.put<ICategory>(
-        `http://localhost:5001/api/info/categories/${id}`,
+        `/api/info/categories/${id}`,
         {
           name: editName,
           description: editDescription
@@ -110,7 +110,7 @@ const CategoryManager = () => {
     
     setLoading(true);
     try {
-      await axios.delete(`http://localhost:5001/api/info/categories/${id}`, {
+      await axios.delete(`/api/info/categories/${id}`, {
         withCredentials: true // Permet d'envoyer les cookies avec la requête
       });
       

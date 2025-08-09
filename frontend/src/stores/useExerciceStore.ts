@@ -4,7 +4,7 @@ import { IExercise } from '../types/exercise'
 
 // Configuration de axios
 const api = axios.create({
-  baseURL: 'http://localhost:5001/api',
+  baseURL: '/api',
   withCredentials: true
 })
 

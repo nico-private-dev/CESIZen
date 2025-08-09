@@ -25,7 +25,7 @@ const ArticleManager = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.get<IInfo[]>('http://localhost:5001/api/info/articles');
+      const response = await axios.get<IInfo[]>('/api/info/articles');
       setArticles(response.data);
     } catch (err: any) {
       console.error('Erreur lors de la récupération des articles:', err);
@@ -37,7 +37,7 @@ const ArticleManager = () => {
   
   const fetchCategories = async () => {
     try {
-      const response = await axios.get<ICategory[]>('http://localhost:5001/api/info/categories');
+      const response = await axios.get<ICategory[]>('/api/info/categories');
       setCategories(response.data);
       if (response.data.length > 0 && !formData.category) {
         setFormData(prev => ({ ...prev, category: response.data[0]._id }));
@@ -74,14 +74,14 @@ const ArticleManager = () => {
       if (selectedArticleId) {
         // Mise à jour d'un article existant
         await axios.put(
-          `http://localhost:5001/api/info/articles/${selectedArticleId}`,
+          `/api/info/articles/${selectedArticleId}`,
           formData,
           { withCredentials: true }
         );
       } else {
         // Création d'un nouvel article
         await axios.post(
-          'http://localhost:5001/api/info/articles',
+          '/api/info/articles',
           formData,
           { withCredentials: true }
         );
@@ -117,7 +117,7 @@ const ArticleManager = () => {
     
     try {
 
-      await axios.delete(`http://localhost:5001/api/info/articles/${id}`, {
+      await axios.delete(`/api/info/articles/${id}`, {
         withCredentials: true
       });
       
