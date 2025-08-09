@@ -19,30 +19,33 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18'
-          cache: 'npm'
-          cache-dependency-path: 'backend/package-lock.json'
+      
+      # Installation de pnpm
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+          run_install: false
       
       # Backend tests
       - name: Install backend dependencies
-        run: cd backend && npm install
+        run: cd backend && pnpm install
       
       - name: Run backend tests
-        run: cd backend && npm test
+        run: cd backend && pnpm test
       
       # Configuration Node.js pour le frontend
       - name: Setup Node.js for Frontend
         uses: actions/setup-node@v3
         with:
           node-version: '18'
-          cache: 'npm'
-          cache-dependency-path: 'frontend/package-lock.json'
       
       # Frontend tests
       - name: Install frontend dependencies
-        run: cd frontend && npm install
+        run: cd frontend && pnpm install
       
       - name: Run frontend tests
-        run: cd frontend && npm test
+        run: cd frontend && pnpm test
 
   build:
     name: Build
