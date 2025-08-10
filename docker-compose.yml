@@ -16,6 +16,9 @@ services:
       - mongodb_data:/data/db
     networks:
       - cesizen-network
+    profiles:
+      - production
+      - development
 
   # Backend Node.js
   backend:
@@ -35,9 +38,11 @@ services:
       - JWT_EXPIRES_IN=${JWT_EXPIRES_IN:-3600}
       - JWT_REFRESH_EXPIRES_IN=${JWT_REFRESH_EXPIRES_IN:-604800}
     ports:
-      - "5001:5001"
+      - "5000:5001"
     networks:
       - cesizen-network
+    profiles:
+      - production
   
   backend-dev:
     build: 
@@ -52,7 +57,9 @@ services:
       - NODE_ENV=development
     networks:
       - cesizen-network
-
+    profiles:
+      - development
+  
   # Frontend React (production build)
   frontend:
     build:
@@ -66,7 +73,8 @@ services:
       - "80:80"
     networks:
       - cesizen-network
-      
+    profiles:
+      - production      
   # Frontend React (development mode avec hot-reload)
   frontend-dev:
     image: node:18-alpine
@@ -78,12 +86,14 @@ services:
     ports:
       - "4000:4000"
     depends_on:
-      - backend
+      - backend-dev
     environment:
       - VITE_API_URL=http://localhost:5001/api
     command: sh -c "npm install -g pnpm && pnpm install && pnpm run dev -- --host 0.0.0.0 --port 4000"
     networks:
       - cesizen-network
+    profiles:
+      - development
 
 networks:
   cesizen-network:

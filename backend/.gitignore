@@ -3,3 +3,4 @@ node_modules/
 config/.env
 dist/
 .env.example 
+node_modules 2
