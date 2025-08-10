@@ -3,19 +3,22 @@ version: '3.8'
 services:
   # Base de données MongoDB
   mongodb:
-    image: mongo:latest
+    image: mongo:7
     container_name: cesizen-mongodb
     restart: always
     environment:
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
-      MONGO_INITDB_DATABASE: ${MONGO_DATABASE}
+      - MONGO_INITDB_ROOT_USERNAME=cesizen_dev
+      - MONGO_INITDB_ROOT_PASSWORD=dev_password
+      - MONGO_INITDB_DATABASE=cesizen_dev
     ports:
       - "27017:27017"
     volumes:
       - mongodb_data:/data/db
     networks:
       - cesizen-network
+    profiles:
+      - production
+      - development
 
   # Backend Node.js
   backend:
@@ -29,17 +32,35 @@ services:
     environment:
       - NODE_ENV=${NODE_ENV:-development}
       - PORT=5001
-      - MONGO_URI=mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@mongodb:27017/${MONGO_DATABASE}
+      - MONGO_URI=mongodb://cesizen_dev:dev_password@mongodb:27017/cesizen_dev?authSource=admin
       - JWT_SECRET=${JWT_SECRET}
       - JWT_REFRESH_SECRET=${JWT_REFRESH_SECRET}
       - JWT_EXPIRES_IN=${JWT_EXPIRES_IN:-3600}
       - JWT_REFRESH_EXPIRES_IN=${JWT_REFRESH_EXPIRES_IN:-604800}
     ports:
-      - "5001:5001"
+      - "5000:5001"
     networks:
       - cesizen-network
-
-  # Frontend React
+    profiles:
+      - production
+  
+  backend-dev:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./backend:/app
+    command: pnpm dev
+    ports:
+      - "5001:5001"
+    environment:
+      - NODE_ENV=development
+    networks:
+      - cesizen-network
+    profiles:
+      - development
+  
+  # Frontend React (production build)
   frontend:
     build:
       context: ./frontend
@@ -52,6 +73,27 @@ services:
       - "80:80"
     networks:
       - cesizen-network
+    profiles:
+      - production      
+  # Frontend React (development mode avec hot-reload)
+  frontend-dev:
+    image: node:18-alpine
+    container_name: cesizen-frontend-dev
+    working_dir: /app
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "4000:4000"
+    depends_on:
+      - backend-dev
+    environment:
+      - VITE_API_URL=http://localhost:5001/api
+    command: sh -c "npm install -g pnpm && pnpm install && pnpm run dev -- --host 0.0.0.0 --port 4000"
+    networks:
+      - cesizen-network
+    profiles:
+      - development
 
 networks:
   cesizen-network:

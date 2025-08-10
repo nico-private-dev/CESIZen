@@ -2,7 +2,7 @@ import { create } from 'zustand'
 import axios from 'axios'
 import { IInfo } from '../types/info'
 
-// Configuration globale d'axios
+// Configuration de l'API
 axios.defaults.baseURL = 'http://localhost:5001/api'
 
 interface InfoState {

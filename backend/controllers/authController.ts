@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { Request, Response, CookieOptions } from 'express';
 import bcrypt from 'bcryptjs';
 import UserModel from '../models/userModel';
 import RoleModel from '../models/roleModels';
@@ -7,22 +7,27 @@ import jwt from 'jsonwebtoken';
 import { IAuthRequest } from '../types/auth';
 
 // Mise en place des cookies pour stocker les tokens utilisateurs
+const isProd = process.env.NODE_ENV === 'production'
+const baseCookieOptions: CookieOptions = {
+  httpOnly: true,
+  secure: isProd, // dev: false, prod: true
+  sameSite: isProd ? 'strict' : 'none',
+  domain: isProd ? undefined : 'localhost',
+  path: '/',
+}
+
 const setTokenCookies = (res: Response, userId: string) => {
   const accessToken = generateAccessToken(userId);
   const refreshToken = generateRefreshToken(userId);
 
   res.cookie('accessToken', accessToken, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict',
-    maxAge: 15 * 60 * 1000 // 15 minutes
+    ...baseCookieOptions,
+    maxAge: 15 * 60 * 1000, // 15 minutes
   });
 
   res.cookie('refreshToken', refreshToken, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict',
-    maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+    ...baseCookieOptions,
+    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
   });
 };
 
@@ -31,9 +36,16 @@ export const signUp = async (req: IAuthRequest, res: Response) => {
   const { username, firstname, lastname, email, password, roleName } = req.body;
 
   try {
-    const existingUser = await UserModel.findOne({ email });
-    if (existingUser) {
-      return res.status(400).json({ message: 'User already exists' });
+    // Vérifier l'unicité de l'email
+    const existingByEmail = await UserModel.findOne({ email });
+    if (existingByEmail) {
+      return res.status(400).json({ message: 'Email already exists' });
+    }
+
+    // Vérifier l'unicité du nom d'utilisateur
+    const existingByUsername = await UserModel.findOne({ username });
+    if (existingByUsername) {
+      return res.status(400).json({ message: 'Username already exists' });
     }
 
     const role = await RoleModel.findOne({ name: roleName });
@@ -56,8 +68,18 @@ export const signUp = async (req: IAuthRequest, res: Response) => {
 
     const { password: _, ...userResponse } = user.toObject();
     res.status(201).json({ result: userResponse });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error during sign up:', error);
+    // Gestion spécifique des erreurs de duplication Mongo (E11000)
+    if (error?.code === 11000) {
+      const dupField = Object.keys(error?.keyValue || {})[0];
+      const message = dupField === 'email'
+        ? 'Email already exists'
+        : dupField === 'username'
+          ? 'Username already exists'
+          : 'Duplicate value';
+      return res.status(400).json({ message });
+    }
     res.status(500).json({ message: 'Something went wrong' });
   }
 };
@@ -114,10 +136,8 @@ export const refresh = async (req: Request, res: Response) => {
     const accessToken = generateAccessToken(user._id);
     
     res.cookie('accessToken', accessToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 15 * 60 * 1000
+      ...baseCookieOptions,
+      maxAge: 15 * 60 * 1000,
     });
 
     const { password: _, ...userResponse } = user.toObject();
@@ -129,18 +149,14 @@ export const refresh = async (req: Request, res: Response) => {
 
 // Déconnexion
 export const logout = (req: Request, res: Response) => {
-  res.cookie('accessToken', '', { 
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict',
-    maxAge: 0 
+  res.cookie('accessToken', '', {
+    ...baseCookieOptions,
+    maxAge: 0,
   });
   
-  res.cookie('refreshToken', '', { 
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict',
-    maxAge: 0 
+  res.cookie('refreshToken', '', {
+    ...baseCookieOptions,
+    maxAge: 0,
   });
   
   res.status(200).json({ message: 'Logged out successfully' });

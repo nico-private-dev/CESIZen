@@ -4,7 +4,7 @@ import { IUser } from '../../types/user';
 import { BsTrash } from 'react-icons/bs';
 
 const api = axios.create({
-  baseURL: 'http://localhost:5001',
+  baseURL: '/api',
   withCredentials: true
 });
 
@@ -18,7 +18,7 @@ function UsersManager() {
   const fetchUsers = async () => {
     setLoading(true);
     try {
-      const response = await api.get<IUser[]>('/api/users');
+      const response = await api.get<IUser[]>('/users');
       setUsers(response.data);
     } catch (error) {
       console.error('Erreur lors de la récupération des utilisateurs:', error);
@@ -38,7 +38,7 @@ function UsersManager() {
     }
 
     try {
-      await api.delete(`/api/users/${userId}`);
+      await api.delete(`/users/${userId}`);
       // Rafraîchir la liste des utilisateurs
       fetchUsers();
     } catch (error: any) {

@@ -49,22 +49,24 @@ const SignUp = () => {
           <form onSubmit={handleSubmit} data-testid="register-form">
             <div className='flex-col md:flex-row flex gap-4'>
               <div className="mb-4">
-                <label className="block text-gray-700">Nom</label>
+                <label className="block text-gray-700">Prénom</label>
                 <input
                   type="text"
                   value={firstname}
                   onChange={(e) => setFirstname(e.target.value)}
                   className="w-full p-2 border border-gray-300 rounded-lg mt-1"
+                  required
                   data-testid="firstname-input"
                 />
               </div>
               <div className="mb-4">
-                <label className="block text-gray-700">Prénom</label>
+                <label className="block text-gray-700">Nom</label>
                 <input
                   type="text"
                   value={lastname}
                   onChange={(e) => setLastname(e.target.value)}
                   className="w-full p-2 border border-gray-300 rounded-lg mt-1"
+                  required
                   data-testid="lastname-input"
                 />
               </div>
@@ -87,6 +89,7 @@ const SignUp = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full p-2 border border-gray-300 rounded-lg mt-1"
+                required
                 data-testid="email-input"
               />
             </div>
@@ -97,11 +100,13 @@ const SignUp = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full p-2 border border-gray-300 rounded-lg mt-1"
+                required
+                minLength={6}
                 data-testid="password-input"
               />
             </div>
             <div className="mb-4">
-            <label className="block text-gray-700">Confirmer le mot de passe</label>
+            <label className="block text-gray-700">Confirmer le mdp</label>
             <input
               type="password"
               value={confirmPassword}
