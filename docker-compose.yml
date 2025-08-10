@@ -3,7 +3,7 @@ version: '3.8'
 services:
   # Base de données MongoDB
   mongodb:
-    image: mongo:latest
+    image: mongo:7
     container_name: cesizen-mongodb
     restart: always
     environment:
@@ -36,6 +36,20 @@ services:
       - JWT_REFRESH_EXPIRES_IN=${JWT_REFRESH_EXPIRES_IN:-604800}
     ports:
       - "5001:5001"
+    networks:
+      - cesizen-network
+  
+  backend-dev:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./backend:/app
+    command: pnpm dev
+    ports:
+      - "5001:5001"
+    environment:
+      - NODE_ENV=development
     networks:
       - cesizen-network
 
