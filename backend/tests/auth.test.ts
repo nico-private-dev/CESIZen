@@ -115,7 +115,7 @@ describe('Auth Controller Tests', () => {
       // Vérifier les résultats
       expect(responseObject.statusCode).toBe(400);
       expect(responseObject.json).toHaveBeenCalledWith(expect.objectContaining({
-        message: 'User already exists'
+        message: 'Email already exists'
       }));
     });
   });
