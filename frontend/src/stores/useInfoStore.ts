@@ -3,7 +3,7 @@ import axios from 'axios'
 import { IInfo } from '../types/info'
 
 // Configuration de l'API
-axios.defaults.baseURL = '/api'
+axios.defaults.baseURL = 'http://localhost:5001/api'
 
 interface InfoState {
   infos: IInfo[]

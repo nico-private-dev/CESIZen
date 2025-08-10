@@ -39,7 +39,7 @@ services:
     networks:
       - cesizen-network
 
-  # Frontend React
+  # Frontend React (production build)
   frontend:
     build:
       context: ./frontend
@@ -50,6 +50,24 @@ services:
       - backend
     ports:
       - "80:80"
+    networks:
+      - cesizen-network
+      
+  # Frontend React (development mode avec hot-reload)
+  frontend-dev:
+    image: node:18-alpine
+    container_name: cesizen-frontend-dev
+    working_dir: /app
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "4000:4000"
+    depends_on:
+      - backend
+    environment:
+      - VITE_API_URL=http://localhost:5001/api
+    command: sh -c "npm install -g pnpm && pnpm install && pnpm run dev -- --host 0.0.0.0 --port 4000"
     networks:
       - cesizen-network
 

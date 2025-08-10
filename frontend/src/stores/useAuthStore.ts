@@ -4,7 +4,7 @@ import type { IUser } from '../types/user'
 
 // Configuration de axios
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: 'http://localhost:5001/api',
   withCredentials: true
 })
 
@@ -78,6 +78,8 @@ const useAuthStore = create<AuthState>((set, get) => ({
       set({ user: null, isAuthenticated: false })
     } catch (err: any) {
       console.error('Logout error:', err)
+      // Même en cas d'erreur, on réinitialise l'état de l'utilisateur
+      set({ user: null, isAuthenticated: false })
     }
   },
 
