@@ -74,12 +74,15 @@ const useAuthStore = create<AuthState>((set, get) => ({
   // DECONNEXION
   logout: async () => {
     try {
-      await api.post('/auth/logout')
-      set({ user: null, isAuthenticated: false })
+      // Appeler l'API pour déconnecter l'utilisateur côté serveur
+      await api.post('/auth/logout');
+      
+      // Réinitialiser l'état de l'utilisateur
+      set({ user: null, isAuthenticated: false, error: null });
     } catch (err: any) {
-      console.error('Logout error:', err)
+      console.error('Logout error:', err);
       // Même en cas d'erreur, on réinitialise l'état de l'utilisateur
-      set({ user: null, isAuthenticated: false })
+      set({ user: null, isAuthenticated: false });
     }
   },
 
