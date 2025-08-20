@@ -11,6 +11,7 @@ import infoRoutes from './routes/infoRoutes';
 import infoCategoryRoutes from './routes/infoCategoryRoutes';
 import userRoutes from './routes/userRoutes';
 import exerciseRoutes from './routes/exerciseRoutes';
+import initializeRoles from './config/initDb';
 
 // Charger les variables d'environnement
 dotenv.config();
@@ -20,7 +21,10 @@ const app = express();
 const PORT = process.env.PORT || 5001;
 
 // Connexion à MongoDB
-connectDB(); 
+connectDB().then(() => {
+  // Initialiser les rôles après la connexion à la base de données
+  initializeRoles();
+});
 
 // Middleware
 app.use(express.json());

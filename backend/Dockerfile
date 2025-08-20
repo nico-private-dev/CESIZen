@@ -15,11 +15,11 @@ RUN pnpm install
 # Copier le reste du code source
 COPY . .
 
-# Compiler le TypeScript
-RUN pnpm build
+# Compiler le TypeScript en mode production
+RUN if [ "$NODE_ENV" = "production" ]; then pnpm build; fi
 
 # Exposer le port sur lequel l'application s'exécute
 EXPOSE 5001
 
-# Commande pour démarrer l'application
-CMD ["pnpm", "start"]
+# Commande pour démarrer l'application selon l'environnement
+CMD if [ "$NODE_ENV" = "production" ]; then pnpm start; else pnpm dev; fi
